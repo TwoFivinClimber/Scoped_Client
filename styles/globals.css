@@ -1,5 +1,7 @@
 @import 'bootstrap/dist/css/bootstrap.css';
 
+
+
 html,
 body {
   padding: 0;
@@ -19,4 +21,20 @@ a {
 
 body {
   background-color: #88effd;
+}
+
+/* NAV */
+
+.scoped-nav{
+  font-size: 2em;
+  padding: 0!important;
+}
+.nav-user-image{
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+}
+
+.user-nav-div{
+  display: flex;
 }

@@ -2,36 +2,43 @@
 import React from 'react';
 import Link from 'next/link';
 import {
-  Navbar, //
-  Container,
+  Navbar,
   Nav,
   Button,
+  Image,
 } from 'react-bootstrap';
 import { signOut } from '../utils/auth';
+import { useAuth } from '../utils/context/authContext';
 
 export default function NavBar() {
+  const { user } = useAuth();
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-      <Container>
-        <Link passHref href="/">
-          <Navbar.Brand>CHANGE ME</Navbar.Brand>
-        </Link>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
-            {/* CLOSE NAVBAR ON LINK SELECTION: https://stackoverflow.com/questions/72813635/collapse-on-select-react-bootstrap-navbar-with-nextjs-not-working */}
+    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" className="mb-3">
+      <Link passHref href="/">
+        <Navbar.Brand>Scoped</Navbar.Brand>
+      </Link>
+      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+      <Navbar.Collapse id="responsive-navbar-nav">
+        <Nav className="nav-links">
+          <Link passHref href="/">
+            <Nav.Link>Home</Nav.Link>
+          </Link>
+          <Link passHref href="/delete-me">
+            <Nav.Link>Delete Me</Nav.Link>
+          </Link>
+          <div className="nav-right">
             <Link passHref href="/">
-              <Nav.Link>Home</Nav.Link>
+              <Nav.Link>Hello {user.name || user.fbUser.displayName}</Nav.Link>
             </Link>
-            <Link passHref href="/delete-me">
-              <Nav.Link>Delete Me</Nav.Link>
+            <Link passHref href="/">
+              <Image className="user-nav-image" src={user.image} />
             </Link>
             <Button variant="danger" onClick={signOut}>
               Sign Out
             </Button>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
+          </div>
+        </Nav>
+      </Navbar.Collapse>
     </Navbar>
   );
 }
