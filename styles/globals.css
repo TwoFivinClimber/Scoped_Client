@@ -20,7 +20,7 @@ a {
 }
 
 body {
-  background-color: #88effd;
+  background-color: #e5e5e5;
 }
 
 /* NAV */
@@ -35,6 +35,6 @@ body {
   height: 45px;
 }
 
-.user-nav-div{
-  display: flex;
+.meta-fix{
+  color: black!important;
 }
