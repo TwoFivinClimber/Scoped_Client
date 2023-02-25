@@ -12,9 +12,9 @@ function UserCard({ obj }) {
           {obj.bio}
         </Card.Description>
       </Card.Content>
-      <Card.Meta extra>
+      <Card.Meta>
         {obj.skills.map((skill) => (
-          <li>{skill.skill.skill}</li>
+          <li key={skill.id}>{skill.skill.skill}</li>
         ))}
       </Card.Meta>
     </Card>

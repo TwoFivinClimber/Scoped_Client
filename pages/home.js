@@ -18,7 +18,7 @@ function MyJobs() {
   return (
     <>
       {jobs.map((job) => (
-        <JobCard obj={job} />
+        <JobCard key={job.id} obj={job} />
       ))}
     </>
   );
