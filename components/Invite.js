@@ -36,7 +36,7 @@ function Invite({ obj, onUpdate }) {
         <Card.Header>{obj.job.title}
           <Button inverted color="red" onClick={() => declineOffer()} floated="right">Decline</Button>
           <Button inverted color="green" onClick={() => acceptOffer()} floated="right">Accept</Button>
-          <Button inverted color="purple" onClick={() => router.push(`${obj.job.id}`)} floated="right">View</Button>
+          <Button inverted color="purple" onClick={() => router.push(`/job/${obj.job.id}`)} floated="right">View</Button>
         </Card.Header>
         <Card.Meta className="meta-fix">
           <span className="date">{date}, {time}</span>

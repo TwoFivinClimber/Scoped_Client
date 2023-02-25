@@ -23,7 +23,7 @@ export default function NavBar() {
 
   useEffect(() => {
     getNotifications();
-  }, [invites, updateInvites]);
+  }, []);
 
   return (
     <Segment inverted attached size="mini">

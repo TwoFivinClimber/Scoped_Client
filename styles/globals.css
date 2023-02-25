@@ -38,3 +38,43 @@ body {
 .meta-fix{
   color: black!important;
 }
+
+/* Job Detail */
+.job-crew-column{
+  display: flex!important;
+  flex-direction: column;
+  justify-content: center;
+  
+}
+
+.job-crew-card{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.job-crew-card > * {
+  margin: 0;
+}
+
+
+.job-equipment-div{
+  max-height: 6rem;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+.job-equipment-item{
+  margin: .5rem;
+}
+
+.job-images-div{
+  display: flex;
+  flex-direction: wrap;
+  overflow:scroll;
+}
+
+.job-image{
+  height: 180px!important;
+  width: 240px!important;
+  object-fit: cover;
+}
