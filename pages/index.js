@@ -1,26 +1,26 @@
-import { Button } from 'react-bootstrap';
-import { signOut } from '../utils/auth';
+import React, { useEffect, useState } from 'react';
+import JobCard from '../components/JobCard';
 import { useAuth } from '../utils/context/authContext';
+import { getJobsByCrew } from '../utils/data/job';
 
 function Home() {
+  const [jobs, setJobs] = useState([]);
   const { user } = useAuth();
+
+  const getTheContent = () => {
+    getJobsByCrew(user?.id).then(setJobs);
+  };
+
+  useEffect(() => {
+    getTheContent();
+  }, [user]);
+
   return (
-    <div
-      className="text-center d-flex flex-column justify-content-center align-content-center"
-      style={{
-        height: '90vh',
-        padding: '30px',
-        maxWidth: '400px',
-        margin: '0 auto',
-      }}
-    >
-      <h1>Hello {user.fbUser.displayName}! </h1>
-      <p>Your Bio: {user.bio}</p>
-      <p>Click the button below to logout!</p>
-      <Button variant="danger" type="button" size="lg" className="copy-btn" onClick={signOut}>
-        Sign Out
-      </Button>
-    </div>
+    <>
+      {jobs.map((job) => (
+        <JobCard key={job.id} obj={job} />
+      ))}
+    </>
   );
 }
 

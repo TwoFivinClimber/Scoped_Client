@@ -3,22 +3,33 @@ import {
   useContext,
   useMemo,
   useState,
+  useEffect,
 } from 'react';
 import { getInvitesByUser } from '../data/invites';
+import { useAuth } from './authContext';
 
 const NavContext = createContext();
 
 NavContext.displayName = 'NavContext';
 
 const InviteProvider = (props) => {
+  const { user } = useAuth();
   const [invites, setInvites] = useState(null);
 
   const updateInvites = useMemo(
-    () => (id) => getInvitesByUser(id).then((data) => {
+    () => () => getInvitesByUser(user?.id).then((data) => {
       setInvites(data);
     }),
-    [],
+    [user?.id],
   );
+
+  useEffect(() => {
+    if (user?.id) {
+      getInvitesByUser(user?.id).then((data) => {
+        setInvites(data);
+      });
+    }
+  }, [user?.id, updateInvites]);
 
   const value = useMemo(
     () => ({

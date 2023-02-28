@@ -1,11 +1,12 @@
 import { React, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Segment, Header } from 'semantic-ui-react';
+import { Segment, Header, Comment } from 'semantic-ui-react';
 import { getSingleJob } from '../../utils/data/job';
 import JobDetail from '../../components/JobDetail';
 import { getJobMessages } from '../../utils/data/messages';
 import Message from '../../components/Message';
 import MessageForm from '../../components/MessageForm';
+import Images from '../../components/Images';
 
 function Job() {
   const [job, setJob] = useState({});
@@ -29,11 +30,14 @@ function Job() {
   return (
     <>
       <JobDetail obj={job} />
+      <Images imageArr={job.images} />
       <Segment>
         <Header as="h3">Messages</Header>
-        {messages.map((i) => (
-          <Message key={i.content} obj={i} onUpdate={updateMessages} />
-        ))}
+        <Comment.Group>
+          {messages.map((i) => (
+            <Message key={i.content} obj={i} onUpdate={updateMessages} />
+          ))}
+        </Comment.Group>
         <MessageForm obj={{}} job={job.id} onUpdate={updateMessages} />
       </Segment>
     </>

@@ -4,28 +4,25 @@ import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import { acceptJob, declineJob } from '../utils/data/invites';
 import { useInvite } from '../utils/context/navContext';
-import { useAuth } from '../utils/context/authContext';
 
-function Invite({ obj, onUpdate }) {
+function Invite({ obj }) {
   const router = useRouter();
-  const { user } = useAuth();
   const { updateInvites } = useInvite();
   const date = obj.job.datetime.split('T')[0];
   const time = obj.job.datetime.split('T')[1].split('Z')[0];
 
   const acceptOffer = () => {
     if (window.confirm(`Job is on ${date} at ${time}.  PLease arrive 15min prior to start time`)) {
-      acceptJob(obj.id);
-      updateInvites(user.id);
-      onUpdate();
+      acceptJob(obj.id).then(() => {
+        updateInvites();
+      });
     }
   };
 
   const declineOffer = () => {
     if (window.confirm('Decline Offer ?')) {
       declineJob(obj.id).then(() => {
-        updateInvites(user.id);
-        onUpdate();
+        updateInvites();
       });
     }
   };
@@ -67,7 +64,6 @@ Invite.propTypes = {
       skill: PropTypes.string,
     }),
   }).isRequired,
-  onUpdate: PropTypes.func.isRequired,
 };
 
 export default Invite;

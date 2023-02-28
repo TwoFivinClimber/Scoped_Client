@@ -29,30 +29,32 @@ function Message({ obj, onUpdate }) {
       id: obj.id,
       content: editMessage,
     };
-    updateMessage(message).then(onUpdate);
+    updateMessage(message).then(() => {
+      onUpdate();
+      setEdit(!edit);
+    });
   };
 
   return (
-    <Comment.Group>
-      <Comment>
-        <Comment.Avatar src={obj.uid?.image} />
-        <Comment.Content>
-          <Comment.Author>{obj.uid?.name}</Comment.Author>
-          <Comment.Metadata>
-            <div>{obj?.datetime.split('T')[0]} {obj?.datetime.split('T')[1]}</div>
-          </Comment.Metadata>
-          {!edit ? (
-            <Comment.Text>{obj?.content}</Comment.Text>
-          ) : <Form.TextArea onChange={handleChange} value={editMessage} />}
-          <Comment.Actions>
-            {edit ? (<Comment.Action onClick={handleSubmit}>Submit</Comment.Action>) : ('')}
-            {obj.uid.id === user.id ? (
-              <> <Comment.Action onClick={editThisComment}>Edit</Comment.Action><Comment.Action onClick={deleteThisMessage}>Delete</Comment.Action></>
-            ) : <Comment.Action>Reply</Comment.Action>}
-          </Comment.Actions>
-        </Comment.Content>
-      </Comment>
-    </Comment.Group>
+    <Comment>
+      <Comment.Avatar src={obj.uid?.image} />
+      <Comment.Content>
+        <Comment.Author>{obj.uid?.name}</Comment.Author>
+        <Comment.Metadata>
+          <div>{obj?.datetime.split('T')[0]} {obj?.datetime.split('T')[1]}</div>
+        </Comment.Metadata>
+        <Comment.Text hidden={edit}>{obj?.content}</Comment.Text>
+        <Form.Input hidden={!edit} fluid onChange={handleChange} value={editMessage} />
+        <Comment.Actions>
+          <Comment.Action hidden={!edit} onClick={handleSubmit}>Submit</Comment.Action>
+          <Comment.Action hidden={!edit} onClick={() => setEdit(!edit)}>Cancel</Comment.Action>
+          <Comment.Action hidden={!obj.uid.id === user.id || edit} onClick={editThisComment}>Edit</Comment.Action>
+          <Comment.Action hidden={!obj.uid.id === user.id || edit} onClick={deleteThisMessage}>Delete</Comment.Action>
+          <Comment.Action hidden={obj.uid.id === user.id}>Reply</Comment.Action>
+        </Comment.Actions>
+      </Comment.Content>
+      {/* Reply goes here */}
+    </Comment>
   );
 }
 

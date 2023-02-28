@@ -1,9 +1,16 @@
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useState, useEffect } from 'react';
 import UserCard from '../../components/UserCard';
-import { useAuth } from '../../utils/context/authContext';
+import { getUser } from '../../utils/data/user';
 
 function UserPage() {
-  const { user } = useAuth();
+  const [user, setUser] = useState({});
+  const router = useRouter();
+  const { id } = router.query;
+
+  useEffect(() => {
+    getUser(id).then(setUser);
+  }, [router]);
 
   return (
     <UserCard obj={user} />

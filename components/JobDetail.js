@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Container, Header, Grid, Image, Divider, Segment,
+  Header, Grid, Image, Divider, Segment, List,
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
@@ -9,22 +9,32 @@ function JobDetail({ obj }) {
   const time = obj.datetime?.split('T')[1].split('Z')[0];
 
   return (
-    <Container fluid>
-      <Header as="h1">{obj?.title}</Header>
-      <Grid columns={2} divided>
-        <Grid.Column as="h5">
-          <li>{obj.location}</li>
-          <Divider />
-          <li>{date}</li>
-          <Divider />
-          <li>{time}</li>
-        </Grid.Column>
-        <Grid.Column className="job-crew-column">
-          {obj.crew?.map((i) => (
-            <div className="job-crew-card" key={i.id}><Image avatar src={i.uid.image} /><p>{i.uid.name}</p><p>{i.skill.skill}</p></div>
-          ))}
-        </Grid.Column>
-      </Grid>
+    <>
+      <Segment fluid>
+        <Header as="h1">{obj?.title}</Header>
+        <Grid columns={2} divided>
+          <Grid.Column as="h5">
+            <li>{obj.location}</li>
+            <Divider />
+            <li>{date}</li>
+            <Divider />
+            <li>{time}</li>
+          </Grid.Column>
+          <Grid.Column className="job-crew-column">
+            <List horizontal relaxed>
+              {obj.crew?.map((i) => (
+                <List.Item key={i.id}>
+                  <Image avatar src={i.uid.image} />
+                  <List.Content>
+                    <List.Header>{i.uid.name}</List.Header>
+                    {i.skill.skill}
+                  </List.Content>
+                </List.Item>
+              ))}
+            </List>
+          </Grid.Column>
+        </Grid>
+      </Segment>
       <Segment>
         <Header as="h3">Job Details</Header>
         <p>{obj.description}</p>
@@ -37,15 +47,7 @@ function JobDetail({ obj }) {
           ))}
         </div>
       </Segment>
-      <Segment className="job-image-segment">
-        <Header as="h3">Photos</Header>
-        <div className="job-images-div">
-          {obj.images?.map((i) => (
-            <Image key={i.id} size="small" bordered centered rounded className="job-image" src={i.image} />
-          ))}
-        </div>
-      </Segment>
-    </Container>
+    </>
   );
 }
 

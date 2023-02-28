@@ -1,23 +1,27 @@
 import React from 'react';
-import { Card, Image } from 'semantic-ui-react';
+import {
+  Image, Grid, Header, List,
+} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 function UserCard({ obj }) {
   return (
-    <Card>
-      <Image src={obj.image} wrapped ui={false} />
-      <Card.Content>
-        <Card.Header>{obj.name}</Card.Header>
-        <Card.Description>
-          {obj.bio}
-        </Card.Description>
-      </Card.Content>
-      <Card.Meta>
-        {obj.skills.map((skill) => (
-          <li key={skill.id}>{skill.skill.skill}</li>
-        ))}
-      </Card.Meta>
-    </Card>
+    <Grid celled>
+      <Grid.Row>
+        <Grid.Column width={4}>
+          <Image src={obj.image} />
+        </Grid.Column>
+        <Grid.Column textAlign="center" width={12}>
+          <Header as="h1">{obj.name}</Header>
+          <Header as="h4">{obj.bio}</Header>
+          <List horizontal size="large" bulleted>
+            {obj.skills?.map((i) => (
+              <List.Item>{i.skill.skill}</List.Item>
+            ))}
+          </List>
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
   );
 }
 

@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { Card, Image } from 'react-bootstrap';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import {
+  Header, Image, Button, Checkbox, Form,
+} from 'semantic-ui-react';
 import AsyncSelect from 'react-select/async';
 import { useRouter } from 'next/router';
 import { registerUser } from '../utils/auth';
@@ -18,6 +18,7 @@ function UserForm({ user }) {
     skills: [],
   };
   const [input, setInput] = useState(initialState);
+  const [terms, setTerms] = useState(false);
   const router = useRouter();
   const { updateUser } = useAuth();
 
@@ -27,7 +28,6 @@ function UserForm({ user }) {
       ...prevState,
       [name]: value,
     }));
-    console.warn(user);
   };
   const handleSkills = (selected) => {
     setInput((prevState) => ({
@@ -56,22 +56,24 @@ function UserForm({ user }) {
         bio: user.bio,
         skills: fSkills,
       };
-      console.warn(userObj);
       setInput(userObj);
     }
   }, [user]);
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Card style={{ display: 'flex', 'flex-direction': 'row', 'align-items': 'center' }}>
-        <Image value={input.image} src={user.fbUser.photoURL} style={{ height: '80px', width: '80px', 'border-radius': '50%' }} />
-        <Card.Title>{user.fbUser.displayName}</Card.Title>
-      </Card>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Bio</Form.Label>
-        <Form.Control name="bio" value={input.bio} required placeholder="Enter your Tag Line" onChange={handleChange} />
-        <Form.Label>Skills</Form.Label>
+      <Header as="h1">
+        <Image circular src={input.image} /> {user.fbUser.displayName}
+      </Header>
+      <Form.Field>
+        <label>Bio
+          <input name="bio" value={input.bio} onChange={handleChange} placeholder="Tell us about yourself" />
+        </label>
+      </Form.Field>
+      <Form.Field>
+        <label htmlFor="skillSelect">Skills</label>
         <AsyncSelect
+          id="skillSelect"
           isMulti
           cacheOptions
           defaultOptions
@@ -79,10 +81,11 @@ function UserForm({ user }) {
           onChange={handleSkills}
           loadOptions={getSkills}
         />
-      </Form.Group>
-      <Button variant="primary" type="submit">
-        Submit
-      </Button>
+      </Form.Field>
+      <Form.Field>
+        <Checkbox required value={terms} onClick={() => setTerms(!terms)} label="I agree to the Terms and Conditions" />
+      </Form.Field>
+      <Button positive type="submit">Submit</Button>
     </Form>
   );
 }
@@ -110,3 +113,21 @@ UserForm.propTypes = {
 };
 
 export default UserForm;
+
+//   <Form.Group className="mb-3" controlId="formBasicEmail">
+//     <Form.Label>Bio</Form.Label>
+//     <Form.Control name="bio" value={input.bio} required placeholder="Enter your Tag Line" onChange={handleChange} />
+//     <Form.Label>Skills</Form.Label>
+//     <AsyncSelect
+//       isMulti
+//       cacheOptions
+//       defaultOptions
+//       value={input.skills}
+//       onChange={handleSkills}
+//       loadOptions={getSkills}
+//     />
+//   </Form.Group>
+//   <Button variant="primary" type="submit">
+//     Submit
+//   </Button>
+// </Form>

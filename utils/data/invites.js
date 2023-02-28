@@ -12,7 +12,7 @@ const acceptJob = (id) => new Promise((resolve, reject) => {
   fetch(`${dbUrl}/crews/${id}/accept`, {
     method: 'PUT',
   })
-    .then((response) => response.json)
+    .then((response) => resolve(response.json()))
     .catch(reject);
 });
 
