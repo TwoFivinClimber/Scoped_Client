@@ -8,5 +8,10 @@ const getUser = (id) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-// eslint-disable-next-line import/prefer-default-export
-export { getUser };
+const getCrewForJob = () => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/users?crew=true`)
+    .then((response) => resolve(response.json()))
+    .catch(reject);
+});
+
+export { getUser, getCrewForJob };

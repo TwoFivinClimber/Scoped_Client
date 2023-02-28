@@ -8,5 +8,10 @@ const findPlace = (input) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-// eslint-disable-next-line import/prefer-default-export
-export { findPlace };
+const getLocationDetails = (placeId) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/detail?placeId=${placeId}`)
+    .then((response) => resolve(response.json()))
+    .catch((response) => reject(response));
+});
+
+export { findPlace, getLocationDetails };

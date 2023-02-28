@@ -6,7 +6,9 @@ import {
 import AsyncSelect from 'react-select/async';
 import AsyncCreatable from 'react-select/async-creatable';
 import getSkills from '../utils/data/skills';
-import { findPlace } from '../utils/data/location';
+import { findPlace, getLocationDetails } from '../utils/data/location';
+import CrewModal from './CrewModal';
+import GearModal from './GearModal';
 
 const initialState = {
   title: '',
@@ -26,6 +28,7 @@ function JobForm() {
   const [input, setInput] = useState(initialState);
   const [images, setImages] = useState([]);
   const [open, setOpen] = useState(false);
+  const [abri, setAbri] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,7 +36,6 @@ function JobForm() {
       ...prev,
       [name]: value,
     }));
-    console.warn(typeof name, typeof value);
   };
 
   const handleCategory = (selected) => {
@@ -43,10 +45,18 @@ function JobForm() {
     }));
   };
 
-  const placeOptions = (query) => {
-    findPlace(query).then((response) => {
-      console.warn(response);
-    });
+  const handleLocationSelect = (target) => {
+    if (target) {
+      getLocationDetails(target.value).then((response) => {
+        setInput((prev) => ({
+          ...prev,
+          location: response.name,
+          address: response.formatted_address,
+          lat: response.geometry.location.lat,
+          long: response.geometry.location.lng,
+        }));
+      });
+    }
   };
 
   const handleImage = (e) => {
@@ -71,8 +81,8 @@ function JobForm() {
             classNamePrefix="select"
             backspaceRemovesValue
             isClearable
-          // onChange={handleLocationSelect}
-            loadOptions={placeOptions}
+            onChange={handleLocationSelect}
+            loadOptions={findPlace}
             required
           />
         </Form.Field>
@@ -96,9 +106,11 @@ function JobForm() {
       <Form.Group className="job-form-buttons" widths="equal">
         <div>
           <Button onClick={() => setOpen(!open)} color="blue">Select Crew</Button>
+          <CrewModal open={open} setOpen={setOpen} />
         </div>
         <div>
-          <Button onClick={() => setOpen(!open)} color="orange">Select Gear</Button>
+          <Button onClick={() => setAbri(!abri)} color="orange">Select Gear</Button>
+          <GearModal abri={abri} setAbri={setAbri} />
         </div>
       </Form.Group>
       <Grid divided textAlign="centered" columns={2}>
