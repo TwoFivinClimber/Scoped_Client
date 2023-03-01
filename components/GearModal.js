@@ -1,15 +1,40 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Modal, Button, Form, Segment,
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import AsyncSelect from 'react-select/async';
-import { getGear } from '../utils/data/gear';
+import { getGear, updateJobGear } from '../utils/data/gear';
 
-function GearModal({ abri, setAbri }) {
+function GearModal({
+  gearArr, abri, setAbri, jobId, onUpdate,
+}) {
+  const [gear, setGear] = useState([]);
+
   const handleSelect = (e) => {
-    console.warn(e);
+    setGear(e);
   };
+
+  const handleAdd = (e) => {
+    e.preventDefault();
+    if (jobId) {
+      const gearObj = {
+        jobId,
+        gear: gear.map((i) => i.value),
+      };
+      updateJobGear(gearObj).then(() => {
+        onUpdate();
+        setAbri(!abri);
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (gearArr?.length) {
+      const gearValue = gearArr.map((i) => i.gear);
+      setGear(gearValue);
+    }
+  }, [abri, gearArr]);
 
   return (
     <Modal
@@ -20,7 +45,7 @@ function GearModal({ abri, setAbri }) {
     >
       <Modal.Header>Select Job Gear Needed</Modal.Header>
       <Segment>
-        <Form>
+        <Form onSubmit={handleAdd}>
           <Form.Field>
             <label htmlFor="userSelect">Select Gear</label>
             <AsyncSelect
@@ -28,15 +53,16 @@ function GearModal({ abri, setAbri }) {
               isMulti
               cacheOptions
               defaultOptions
+              value={gear}
               onChange={handleSelect}
               loadOptions={getGear}
             />
           </Form.Field>
           <Form.Group className="crew-modal-buttons" widths="equal">
-            <Button positive>
+            <Button type="submit" positive>
               Add
             </Button>
-            <Button color="black" onClick={() => setAbri(false)}>
+            <Button type="button" color="black" onClick={() => setAbri(false)}>
               Done
             </Button>
           </Form.Group>
@@ -49,6 +75,16 @@ function GearModal({ abri, setAbri }) {
 GearModal.propTypes = {
   abri: PropTypes.bool.isRequired,
   setAbri: PropTypes.func.isRequired,
+  jobId: PropTypes.number.isRequired,
+  onUpdate: PropTypes.func.isRequired,
+  gearArr: PropTypes.arrayOf(
+    PropTypes.shape({
+      gear: PropTypes.shape({
+        label: PropTypes.string,
+        value: PropTypes.number,
+      }),
+    }),
+  ).isRequired,
 };
 
 export default GearModal;

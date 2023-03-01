@@ -7,6 +7,7 @@ import { getJobMessages } from '../../utils/data/messages';
 import Message from '../../components/Message';
 import MessageForm from '../../components/MessageForm';
 import Images from '../../components/Images';
+import Gear from '../../components/Gear';
 
 function Job() {
   const [job, setJob] = useState({});
@@ -30,6 +31,7 @@ function Job() {
   return (
     <>
       <JobDetail obj={job} />
+      <Gear authId={job.uid?.id} jobId={job.id} arr={job.gear} onUpdate={getTheContent} />
       <Images imageArr={job.images} />
       <Segment>
         <Header as="h3">Messages</Header>

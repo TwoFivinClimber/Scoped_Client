@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  Header, Grid, Image, Divider, Segment, List,
+  Header, Grid, Image, Divider, Segment, List, Button,
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import CrewModal from './CrewModal';
+import { useAuth } from '../utils/context/authContext';
 
 function JobDetail({ obj }) {
   const date = obj.datetime?.split('T')[0];
   const time = obj.datetime?.split('T')[1].split('Z')[0];
+  const [open, setOpen] = useState(false);
+  const { user } = useAuth();
 
   return (
     <>
@@ -21,6 +25,9 @@ function JobDetail({ obj }) {
             <li>{time}</li>
           </Grid.Column>
           <Grid.Column className="job-crew-column">
+            <Header as="h4">Crew
+              <Button hidden={!obj.uid === user.id} onClick={() => setOpen(!open)} size="small">Add Crew</Button>
+            </Header>
             <List horizontal relaxed>
               {obj.crew?.map((i) => (
                 <List.Item key={i.id}>
@@ -34,19 +41,10 @@ function JobDetail({ obj }) {
             </List>
           </Grid.Column>
         </Grid>
-      </Segment>
-      <Segment>
         <Header as="h3">Job Details</Header>
         <p>{obj.description}</p>
       </Segment>
-      <Segment className="job-equipment-segment">
-        <Header as="h3">Equipment</Header>
-        <div className="job-equipment-div">
-          {obj.gear?.map((i) => (
-            <li className="job-equipment-item">{i.gear.name}</li>
-          ))}
-        </div>
-      </Segment>
+      <CrewModal jobId={obj.id} crew={obj.crew} open={open} setOpen={setOpen} />
     </>
   );
 }

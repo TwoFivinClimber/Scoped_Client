@@ -1,10 +1,12 @@
 import React from 'react';
 import { Card } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
 
 function JobCard({ obj }) {
+  const router = useRouter();
   return (
-    <Card>
+    <Card as="button" onClick={() => router.push(`/job/${obj.id}`)}>
       <Card.Content header={obj.title} />
       <Card.Content content={obj.datetime.split('T')[0]} />
       <Card.Content description={obj.description} />
@@ -17,6 +19,7 @@ function JobCard({ obj }) {
 
 JobCard.propTypes = {
   obj: PropTypes.shape({
+    id: PropTypes.number,
     title: PropTypes.string,
     description: PropTypes.string,
     datetime: PropTypes.string,

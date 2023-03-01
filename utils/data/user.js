@@ -8,8 +8,8 @@ const getUser = (id) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const getCrewForJob = () => new Promise((resolve, reject) => {
-  fetch(`${dbUrl}/users?crew=true`)
+const getCrewForJob = (id) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/users?job=${id}`)
     .then((response) => resolve(response.json()))
     .catch(reject);
 });

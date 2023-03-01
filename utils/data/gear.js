@@ -8,5 +8,28 @@ const getGear = () => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-// eslint-disable-next-line import/prefer-default-export
-export { getGear };
+const createJobGear = (obj) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/jobgears`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(obj),
+  })
+    .then(resolve)
+    .catch(reject);
+});
+
+const updateJobGear = (obj) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/jobgears/${obj.jobId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(obj),
+  })
+    .then(resolve)
+    .catch(reject);
+});
+
+export { getGear, createJobGear, updateJobGear };
