@@ -1,28 +1,39 @@
 import React, { useState } from 'react';
 import {
-  Modal, Button, Form, Segment, List, Image,
+  Modal, Button, Form, Segment, List, Image, Header,
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import AsyncSelect from 'react-select/async';
 import Select from 'react-select';
-import { getCrewForJob } from '../utils/data/user';
+import { getCrewForJob, createCrew } from '../utils/data/user';
 
-const prevState = {
-  uid: 0,
-  skill: 0,
-};
 function CrewModal({
-  jobId, open, setOpen, crew,
+  jobId, open, setOpen, crew, onUpdate,
 }) {
-  const [selected, setSelected] = useState(prevState);
+  const [selected, setSelected] = useState({});
 
-  const selectedSkills = selected.skills?.map((i) => ({
+  const closeModal = () => {
+    setSelected({});
+    setOpen(!open);
+  };
+
+  const selectedSkills = selected?.skills?.map((i) => ({
     value: i.skill.id,
     label: i.skill.skill,
   }));
 
+  const getAvailableCrew = () => new Promise((resolve) => {
+    getCrewForJob(jobId).then((response) => {
+      resolve(response);
+    });
+  });
+
   const handleCrewSelect = (selection) => {
-    setSelected(selection);
+    setSelected({
+      skills: selection.skills,
+      member: { value: selection.value, label: selection.label },
+      uid: selection.value,
+    });
   };
 
   const handleSkillSelect = (selection) => {
@@ -32,16 +43,19 @@ function CrewModal({
     }));
   };
 
+  /// {uid, job, skill}///
   const handleAdd = (e) => {
     e.preventDefault();
-    console.warn(selected);
-  };
-
-  const getAvailableCrew = () => new Promise((resolve) => {
-    getCrewForJob(jobId).then((response) => {
-      resolve(response);
+    const crewObj = {
+      uid: selected.uid,
+      job: jobId,
+      skill: selected.skill.value,
+    };
+    createCrew(crewObj).then(() => {
+      onUpdate();
     });
-  });
+    setSelected({});
+  };
 
   return (
     <Modal
@@ -57,34 +71,37 @@ function CrewModal({
             <label htmlFor="userSelect">Select a Member</label>
             <AsyncSelect
               id="userSelect"
-              cacheOptions
               defaultOptions
-              value={selected.uid}
+              cacheOptions={false}
+              value={selected.member || ''}
               onChange={handleCrewSelect}
               loadOptions={getAvailableCrew}
+              required
             />
           </Form.Field>
           <Form.Field fluid>
             <label htmlFor="skillSelect">Select Job Skill</label>
             <Select
               id="skillSelect"
-              cacheOptions
               defaultOptions
-              value={selected.skill}
+              cacheOptions={false}
+              value={selected.skill || ''}
               onChange={handleSkillSelect}
               options={selectedSkills}
+              required
             />
           </Form.Field>
           <Form.Group className="crew-modal-buttons" widths="equal">
             <Button type="submit" positive>
               Add
             </Button>
-            <Button type="button" color="black" onClick={() => setOpen(false)}>
+            <Button type="button" color="black" onClick={() => closeModal()}>
               Done
             </Button>
           </Form.Group>
         </Form>
         <List horizontal relaxed>
+          <Header as="h4">Invited Crew</Header>
           {crew?.map((i) => (
             <List.Item key={i.id}>
               <Image avatar src={i.uid.image} />
@@ -104,6 +121,7 @@ CrewModal.propTypes = {
   jobId: PropTypes.number.isRequired,
   open: PropTypes.bool.isRequired,
   setOpen: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired,
   crew: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,

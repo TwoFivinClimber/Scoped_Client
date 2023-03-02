@@ -30,7 +30,7 @@ function Job() {
 
   return (
     <>
-      <JobDetail obj={job} />
+      <JobDetail obj={job} onUpdate={getTheContent} />
       <Gear authId={job.uid?.id} jobId={job.id} arr={job.gear} onUpdate={getTheContent} />
       <Images imageArr={job.images} />
       <Segment>

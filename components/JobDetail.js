@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import CrewModal from './CrewModal';
 import { useAuth } from '../utils/context/authContext';
 
-function JobDetail({ obj }) {
+function JobDetail({ obj, onUpdate }) {
   const date = obj.datetime?.split('T')[0];
   const time = obj.datetime?.split('T')[1].split('Z')[0];
   const [open, setOpen] = useState(false);
@@ -44,12 +44,13 @@ function JobDetail({ obj }) {
         <Header as="h3">Job Details</Header>
         <p>{obj.description}</p>
       </Segment>
-      <CrewModal jobId={obj.id} crew={obj.crew} open={open} setOpen={setOpen} />
+      <CrewModal jobId={obj.id} crew={obj.crew} open={open} setOpen={setOpen} onUpdate={onUpdate} />
     </>
   );
 }
 
 JobDetail.propTypes = {
+  onUpdate: PropTypes.func.isRequired,
   obj: PropTypes.shape({
     id: PropTypes.number,
     title: PropTypes.string,

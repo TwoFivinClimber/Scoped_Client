@@ -14,4 +14,30 @@ const getCrewForJob = (id) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-export { getUser, getCrewForJob };
+const createCrew = (obj) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/crews`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(obj),
+  })
+    .then(resolve)
+    .catch(reject);
+});
+
+const updateCrew = (obj) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/crews/${obj.id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(obj),
+  })
+    .then(resolve)
+    .then(reject);
+});
+
+export {
+  getUser, getCrewForJob, createCrew, updateCrew,
+};
