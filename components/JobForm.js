@@ -1,15 +1,16 @@
 /* eslint-disable no-lone-blocks */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Form, Button,
 } from 'semantic-ui-react';
 import AsyncSelect from 'react-select/async';
 import AsyncCreatable from 'react-select/async-creatable';
 import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import { useAuth } from '../utils/context/authContext';
 import { findPlace, getLocationDetails } from '../utils/data/location';
 import { getSkills } from '../utils/data/skills';
-import { createJob } from '../utils/data/job';
+import { createJob, updateJob } from '../utils/data/job';
 
 const initialState = {
   title: '',
@@ -23,7 +24,7 @@ const initialState = {
   category: null,
 };
 
-function JobForm() {
+function JobForm({ obj }) {
   const [input, setInput] = useState(initialState);
   const router = useRouter();
   const { user } = useAuth();
@@ -60,13 +61,32 @@ function JobForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const payload = { ...input, uid: user.id };
-    payload.datetime = `${input.date} ${input.time}:00`;
-    payload.category = payload.category.value;
-    createJob(payload).then((jobObj) => {
-      router.push(`/job/${jobObj.id}`);
-    });
+    if (obj.id) {
+      input.datetime = `${input.date} ${input.time}:00`;
+      input.category = input.category.value;
+      updateJob(input).then((job) => {
+        router.push(`/job/${job.id}`);
+      });
+    } else {
+      const payload = { ...input, uid: user.id };
+      payload.datetime = `${input.date} ${input.time}:00`;
+      payload.category = payload.category.value;
+      createJob(payload).then((jobObj) => {
+        router.push(`/job/${jobObj.id}`);
+      });
+    }
   };
+
+  useEffect(() => {
+    if (obj.id) {
+      setInput({
+        ...obj,
+        time: obj.datetime?.split('T')[1].split('Z')[0],
+        date: obj.datetime?.split('T')[0],
+        category: { value: obj.category.id, label: obj.category.skill },
+      });
+    }
+  }, [obj]);
 
   return (
     <>
@@ -77,9 +97,9 @@ function JobForm() {
             <label htmlFor="location">Location</label>
             <AsyncCreatable
               id="location"
-              classNamePrefix="select"
               backspaceRemovesValue
               isClearable
+              value={{ label: input.location, value: input.location }}
               onChange={handleLocationSelect}
               loadOptions={findPlace}
               required
@@ -107,12 +127,29 @@ function JobForm() {
             <Button type="submit" positive>Submit</Button>
           </div>
           <div>
-            <Button type="button" negative>Cancle</Button>
+            <Button type="button" negative>Cancel</Button>
           </div>
         </Form.Group>
       </Form>
     </>
   );
 }
+
+JobForm.propTypes = {
+  obj: PropTypes.shape({
+    id: PropTypes.number,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    datetime: PropTypes.string,
+    location: PropTypes.string,
+    address: PropTypes.string,
+    lat: PropTypes.number,
+    long: PropTypes.number,
+    category: PropTypes.shape({
+      id: PropTypes.number,
+      skill: PropTypes.string,
+    }),
+  }).isRequired,
+};
 
 export default JobForm;

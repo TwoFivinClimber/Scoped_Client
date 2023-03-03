@@ -38,6 +38,14 @@ const updateCrew = (obj) => new Promise((resolve, reject) => {
     .then(reject);
 });
 
+const deleteCrew = (id) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/crews/${id}`, {
+    method: 'DELETE',
+  })
+    .then(resolve)
+    .catch(reject);
+});
+
 export {
-  getUser, getCrewForJob, createCrew, updateCrew,
+  getUser, getCrewForJob, createCrew, updateCrew, deleteCrew,
 };

@@ -3,7 +3,7 @@ import JobForm from '../../components/JobForm';
 
 function NewJob() {
   return (
-    <JobForm />
+    <JobForm obj={{}} />
   );
 }
 

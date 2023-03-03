@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import {
-  Header, Grid, Image, Divider, Segment, List, Button,
+  Header, Grid, Image, Divider, Segment, List, Button, Dropdown,
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import Link from 'next/link';
 import CrewModal from './CrewModal';
 import { useAuth } from '../utils/context/authContext';
 
@@ -12,10 +13,34 @@ function JobDetail({ obj, onUpdate }) {
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
 
+  const deleteThisJob = () => {
+    console.warn(obj);
+  };
+
   return (
     <>
       <Segment fluid>
-        <Header as="h1">{obj?.title}</Header>
+        <Grid columns={2}>
+          <Grid.Column>
+            <Header as="h1">{obj?.title}</Header>
+          </Grid.Column>
+          <Grid.Column textAlign="right">
+            <Dropdown
+              className="link item"
+              icon="ellipsis horizontal"
+              hidden={!obj.uid?.id === user.id}
+            >
+              <Dropdown.Menu>
+                <Link passHref href={`/job/edit/${obj.id}`}>
+                  <Dropdown.Item>Edit</Dropdown.Item>
+                </Link>
+
+                <Dropdown.Item onClick={deleteThisJob}>Delete</Dropdown.Item>
+
+              </Dropdown.Menu>
+            </Dropdown>
+          </Grid.Column>
+        </Grid>
         <Grid columns={2} divided>
           <Grid.Column as="h5">
             <li>{obj.location}</li>
