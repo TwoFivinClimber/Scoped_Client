@@ -39,7 +39,11 @@ ImageModal.propTypes = {
       image: PropTypes.string,
       description: PropTypes.string,
     }),
-  ).isRequired,
+  ),
+};
+
+ImageModal.defaultProps = {
+  images: [],
 };
 
 export default ImageModal;

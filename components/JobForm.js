@@ -35,7 +35,6 @@ function JobForm({ obj }) {
       ...prev,
       [name]: value,
     }));
-    console.warn(input);
   };
 
   const handleCategory = (selected) => {
@@ -62,10 +61,10 @@ function JobForm({ obj }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (obj.id) {
-      input.datetime = `${input.date} ${input.time}:00`;
+      input.datetime = `${input.date} ${input.time}`;
       input.category = input.category.value;
-      updateJob(input).then((job) => {
-        router.push(`/job/${job.id}`);
+      updateJob(input).then(() => {
+        router.push(`/job/${obj.id}`);
       });
     } else {
       const payload = { ...input, uid: user.id };

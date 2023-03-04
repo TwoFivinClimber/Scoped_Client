@@ -27,7 +27,7 @@ export default function NavBar() {
       <Link passHref href="/invites">
         <Menu.Item>
           Invites
-          <Icon hidden={!invites?.length} verticalAlign="top" name="bell" size="large" color="yellow" inverted />
+          <Icon hidden={!invites?.length} name="bell" size="large" color="yellow" inverted />
         </Menu.Item>
       </Link>
       <Menu.Item

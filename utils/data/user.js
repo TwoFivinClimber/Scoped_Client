@@ -8,6 +8,24 @@ const getUser = (id) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+const updateUserProfile = (obj) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/users/${obj.id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(obj),
+  })
+    .then(resolve)
+    .catch(reject);
+});
+
+const deleteUser = (id) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/users/${id}`, {
+    method: 'DELETE',
+  })
+    .then(resolve)
+    .catch(reject);
+});
+
 const getCrewForJob = (id) => new Promise((resolve, reject) => {
   fetch(`${dbUrl}/users?job=${id}`)
     .then((response) => resolve(response.json()))
@@ -47,5 +65,5 @@ const deleteCrew = (id) => new Promise((resolve, reject) => {
 });
 
 export {
-  getUser, getCrewForJob, createCrew, updateCrew, deleteCrew,
+  getUser, getCrewForJob, createCrew, updateCrew, deleteCrew, deleteUser, updateUserProfile,
 };

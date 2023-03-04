@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Segment, Header, Image, Form, Item,
+  Segment, Header, Image, Form, Item, Grid,
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import ImageModal from './ImageModal';
@@ -18,19 +18,26 @@ function Images({ imageArr }) {
 
   return (
     <>
-      <Form>
-        <Form.Input type="file" multiple onChange={handleImage} fluid label="Images" placeholder="Upload Images" />
-        <Item.Group className="job-form-image-item-div">
-          {images?.map((i) => (
-            <Item className="job-form-image-item">
-              <Image className="job-form-image" src={URL.createObjectURL(i)} />
-              <Item.Content header verticalAlign="middle">Description of this photo goes here</Item.Content>
-            </Item>
-          ))}
-        </Item.Group>
-      </Form><ImageModal open={open} setOpen={setOpen} images={imageArr} />
+      <Item.Group className="job-form-image-item-div">
+        {images?.map((i) => (
+          <Item className="job-form-image-item">
+            <Image className="job-form-image" src={URL.createObjectURL(i)} />
+            <Item.Content header verticalAlign="middle">Description of this photo goes here</Item.Content>
+          </Item>
+        ))}
+      </Item.Group>
+      <ImageModal open={open} setOpen={setOpen} images={imageArr} />
       <Segment className="job-image-segment">
-        <Header as="h3">Photos</Header>
+        <Grid columns={2}>
+          <Grid.Column>
+            <Header as="h3">Photos</Header>
+          </Grid.Column>
+          <Grid.Column>
+            <Form>
+              <Form.Input type="file" multiple onChange={handleImage} />
+            </Form>
+          </Grid.Column>
+        </Grid>
         <div className="job-images-div">
           {imageArr?.map((i) => (
             <Image onClick={() => setOpen(!open)} key={i.id} size="small" bordered centered rounded className="job-image" src={i.image} />
@@ -49,7 +56,11 @@ Images.propTypes = {
       image: PropTypes.string,
       description: PropTypes.string,
     }),
-  ).isRequired,
+  ),
+};
+
+Images.defaultProps = {
+  imageArr: [],
 };
 
 export default Images;

@@ -5,7 +5,7 @@ import GearModal from './GearModal';
 import { useAuth } from '../utils/context/authContext';
 
 function Gear({
-  authId, jobId, arr, onUpdate,
+  authId, jobId, gearArr, onUpdate,
 }) {
   const [abri, setAbri] = useState(false);
   const { user } = useAuth();
@@ -16,27 +16,33 @@ function Gear({
           <Button hidden={!authId === user.id} onClick={() => setAbri(!abri)} size="small">Add Gear</Button>
         </Header>
         <div className="job-equipment-div">
-          {arr?.map((i) => (
+          {gearArr?.map((i) => (
             <li className="job-equipment-item">{i.gear.label}</li>
           ))}
         </div>
       </Segment>
-      <GearModal gearArr={arr} abri={abri} setAbri={setAbri} jobId={jobId} onUpdate={onUpdate} />
+      <GearModal gearArr={gearArr} abri={abri} setAbri={setAbri} jobId={jobId} onUpdate={onUpdate} />
     </>
   );
 }
 
 Gear.propTypes = {
-  arr: PropTypes.arrayOf(
+  gearArr: PropTypes.arrayOf(
     PropTypes.shape({
       gear: PropTypes.shape({
         name: PropTypes.string,
       }),
     }),
-  ).isRequired,
-  jobId: PropTypes.number.isRequired,
-  authId: PropTypes.number.isRequired,
+  ),
+  jobId: PropTypes.number,
+  authId: PropTypes.number,
   onUpdate: PropTypes.func.isRequired,
+};
+
+Gear.defaultProps = {
+  authId: null,
+  jobId: null,
+  gearArr: [],
 };
 
 export default Gear;

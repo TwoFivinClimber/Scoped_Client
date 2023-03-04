@@ -10,7 +10,7 @@ function UserPage() {
 
   useEffect(() => {
     getUser(id).then(setUser);
-  }, [router]);
+  }, [id, router, user]);
 
   return (
     <UserCard obj={user} />

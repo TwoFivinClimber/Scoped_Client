@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useAuth } from '../utils/context/authContext';
 import { createMessage } from '../utils/data/messages';
 
-function MessageForm({ obj, job, onUpdate }) {
+function MessageForm({ obj, jobId, onUpdate }) {
   const [input, setInput] = useState('');
   const { user } = useAuth();
 
@@ -12,7 +12,7 @@ function MessageForm({ obj, job, onUpdate }) {
     e.preventDefault();
     const message = {
       content: input,
-      job,
+      job: jobId,
       uid: user.id,
     };
     createMessage(message).then(onUpdate);
@@ -38,12 +38,16 @@ function MessageForm({ obj, job, onUpdate }) {
 }
 
 MessageForm.propTypes = {
-  job: PropTypes.number.isRequired,
+  jobId: PropTypes.number,
   onUpdate: PropTypes.func.isRequired,
   obj: PropTypes.shape({
     id: PropTypes.number,
     content: PropTypes.string,
   }).isRequired,
+};
+
+MessageForm.defaultProps = {
+  jobId: null,
 };
 
 export default MessageForm;

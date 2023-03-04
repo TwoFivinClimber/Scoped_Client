@@ -162,7 +162,7 @@ function CrewModal({
 }
 
 CrewModal.propTypes = {
-  jobId: PropTypes.number.isRequired,
+  jobId: PropTypes.number,
   open: PropTypes.bool.isRequired,
   setOpen: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired,
@@ -179,7 +179,12 @@ CrewModal.propTypes = {
         image: PropTypes.string,
       }),
     }),
-  ).isRequired,
+  ),
+};
+
+CrewModal.defaultProps = {
+  jobId: null,
+  crew: [],
 };
 
 export default CrewModal;

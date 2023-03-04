@@ -44,6 +44,13 @@ const updateJob = (obj) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+const deleteJob = (id) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/jobs/${id}`, {
+    method: 'DELETE',
+  })
+    .then(resolve)
+    .then(reject);
+});
 export {
-  getJobsByCrew, getSingleJob, createJob, updateJob, getJobs,
+  getJobsByCrew, getSingleJob, createJob, updateJob, getJobs, deleteJob,
 };

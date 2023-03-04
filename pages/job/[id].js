@@ -31,7 +31,7 @@ function Job() {
   return (
     <>
       <JobDetail obj={job} onUpdate={getTheContent} />
-      <Gear authId={job.uid?.id} jobId={job.id} arr={job.gear} onUpdate={getTheContent} />
+      <Gear authId={job.uid?.id} jobId={job.id} gearArr={job.gear} onUpdate={getTheContent} />
       <Images imageArr={job.images} />
       <Segment>
         <Header as="h3">Messages</Header>
@@ -40,7 +40,7 @@ function Job() {
             <Message key={i.content} obj={i} onUpdate={updateMessages} />
           ))}
         </Comment.Group>
-        <MessageForm obj={{}} job={job.id} onUpdate={updateMessages} />
+        <MessageForm obj={{}} jobId={job.id} onUpdate={updateMessages} />
       </Segment>
     </>
   );

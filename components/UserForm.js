@@ -6,14 +6,15 @@ import {
 import AsyncSelect from 'react-select/async';
 import { useRouter } from 'next/router';
 import { registerUser } from '../utils/auth';
-import getSkills from '../utils/data/skills';
+import { getSkills } from '../utils/data/skills';
 import { useAuth } from '../utils/context/authContext';
+import { updateUserProfile } from '../utils/data/user';
 
-function UserForm({ user }) {
+function UserForm({ userObj }) {
   const initialState = {
-    firebase: user.uid,
-    name: user.fbUser.displayName,
-    image: user.fbUser.photoURL,
+    firebase: userObj.uid,
+    name: userObj.fbUser.displayName,
+    image: userObj.fbUser.photoURL,
     bio: '',
     skills: [],
   };
@@ -36,34 +37,38 @@ function UserForm({ user }) {
     }));
   };
 
+  // registerUser(input)
+  // updateUser(userObj.uid)
   const handleSubmit = (e) => {
     e.preventDefault();
-    if ('valid' in user) {
+    if ('valid' in userObj) {
       input.skills = input.skills.map((s) => s.value);
-      registerUser(input).then(() => updateUser(user.uid)).then(() => router.push('/'));
+      registerUser(input).then(() => updateUser(userObj.uid));
     } else {
-      updateUser();
+      input.skills = input.skills.map((s) => s.value);
+      input.id = userObj.id;
+      updateUserProfile(input).then(() => updateUser(userObj.uid)).then(() => router.push(`/user/${userObj.id}`));
     }
   };
 
   useEffect(() => {
-    if (user.id) {
-      const fSkills = user?.skills.map((i) => ({ value: i.skill.id, label: i.skill.skill }));
-      const userObj = {
-        firebase: user.uid,
-        name: user.name,
-        image: user.image,
-        bio: user.bio,
+    if (userObj.id) {
+      const fSkills = userObj?.skills.map((i) => ({ value: i.skill.id, label: i.skill.skill }));
+      const userData = {
+        firebase: userObj.uid,
+        name: userObj.name,
+        image: userObj.image,
+        bio: userObj.bio,
         skills: fSkills,
       };
-      setInput(userObj);
+      setInput(userData);
     }
-  }, [user]);
+  }, [userObj]);
 
   return (
     <Form onSubmit={handleSubmit}>
       <Header as="h1">
-        <Image circular src={input.image} /> {user.fbUser.displayName}
+        <Image circular src={input.image} /> {userObj.fbUser.displayName}
       </Header>
       <Form.Field>
         <label>Bio
@@ -91,7 +96,7 @@ function UserForm({ user }) {
 }
 
 UserForm.propTypes = {
-  user: PropTypes.shape({
+  userObj: PropTypes.shape({
     id: PropTypes.number,
     uid: PropTypes.string,
     name: PropTypes.string,
@@ -113,21 +118,3 @@ UserForm.propTypes = {
 };
 
 export default UserForm;
-
-//   <Form.Group className="mb-3" controlId="formBasicEmail">
-//     <Form.Label>Bio</Form.Label>
-//     <Form.Control name="bio" value={input.bio} required placeholder="Enter your Tag Line" onChange={handleChange} />
-//     <Form.Label>Skills</Form.Label>
-//     <AsyncSelect
-//       isMulti
-//       cacheOptions
-//       defaultOptions
-//       value={input.skills}
-//       onChange={handleSkills}
-//       loadOptions={getSkills}
-//     />
-//   </Form.Group>
-//   <Button variant="primary" type="submit">
-//     Submit
-//   </Button>
-// </Form>

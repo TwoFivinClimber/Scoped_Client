@@ -28,6 +28,8 @@ const InviteProvider = (props) => {
       getInvitesByUser(user?.id).then((data) => {
         setInvites(data);
       });
+    } else {
+      setInvites(null);
     }
   }, [user?.id, updateInvites]);
 

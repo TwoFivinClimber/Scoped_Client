@@ -4,22 +4,27 @@ import {
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import CrewModal from './CrewModal';
 import { useAuth } from '../utils/context/authContext';
+import { deleteJob } from '../utils/data/job';
 
 function JobDetail({ obj, onUpdate }) {
   const date = obj.datetime?.split('T')[0];
   const time = obj.datetime?.split('T')[1].split('Z')[0];
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
+  const router = useRouter();
 
   const deleteThisJob = () => {
-    console.warn(obj);
+    if (window.confirm('Are you sure you want to delete this job?')) {
+      deleteJob(obj.id).then(() => router.push('/'));
+    }
   };
 
   return (
     <>
-      <Segment fluid>
+      <Segment>
         <Grid columns={2}>
           <Grid.Column>
             <Header as="h1">{obj?.title}</Header>

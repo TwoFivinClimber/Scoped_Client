@@ -75,7 +75,7 @@ function GearModal({
 GearModal.propTypes = {
   abri: PropTypes.bool.isRequired,
   setAbri: PropTypes.func.isRequired,
-  jobId: PropTypes.number.isRequired,
+  jobId: PropTypes.number,
   onUpdate: PropTypes.func.isRequired,
   gearArr: PropTypes.arrayOf(
     PropTypes.shape({
@@ -84,7 +84,13 @@ GearModal.propTypes = {
         value: PropTypes.number,
       }),
     }),
-  ).isRequired,
+  ),
+};
+
+GearModal.defaultProps = {
+
+  jobId: null,
+  gearArr: [],
 };
 
 export default GearModal;
