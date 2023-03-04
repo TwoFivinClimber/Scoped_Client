@@ -39,9 +39,7 @@ function JobDetail({ obj, onUpdate }) {
                 <Link passHref href={`/job/edit/${obj.id}`}>
                   <Dropdown.Item>Edit</Dropdown.Item>
                 </Link>
-
                 <Dropdown.Item onClick={deleteThisJob}>Delete</Dropdown.Item>
-
               </Dropdown.Menu>
             </Dropdown>
           </Grid.Column>

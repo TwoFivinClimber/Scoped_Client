@@ -45,7 +45,6 @@ function CrewModal({
   });
 
   const handleCrewSelect = (selection) => {
-    console.warn(selection);
     setSelected({
       // skills: selection.skills,
       member: { value: selection.value, label: selection.label },

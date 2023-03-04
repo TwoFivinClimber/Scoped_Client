@@ -32,7 +32,7 @@ function Job() {
     <>
       <JobDetail obj={job} onUpdate={getTheContent} />
       <Gear authId={job.uid?.id} jobId={job.id} gearArr={job.gear} onUpdate={getTheContent} />
-      <Images imageArr={job.images} />
+      <Images imageArr={job.images} jobId={job.id} onUpdate={getTheContent} />
       <Segment>
         <Header as="h3">Messages</Header>
         <Comment.Group>

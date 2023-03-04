@@ -17,7 +17,7 @@ function Gear({
         </Header>
         <div className="job-equipment-div">
           {gearArr?.map((i) => (
-            <li className="job-equipment-item">{i.gear.label}</li>
+            <li key={i.id} className="job-equipment-item">{i.gear.label}</li>
           ))}
         </div>
       </Segment>
