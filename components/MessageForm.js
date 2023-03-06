@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button } from 'semantic-ui-react';
+import { Form, Button, Header } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { useAuth } from '../utils/context/authContext';
 import { createMessage } from '../utils/data/messages';
@@ -21,6 +21,13 @@ function MessageForm({ obj, jobId, onUpdate }) {
 
   const handleChange = (e) => {
     setInput(e.target.value);
+    console.warn(input.length > 0);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      handleSubmit(e);
+    }
   };
 
   useEffect(() => {
@@ -31,8 +38,9 @@ function MessageForm({ obj, jobId, onUpdate }) {
 
   return (
     <Form onSubmit={handleSubmit} reply>
-      <Form.TextArea value={input} onChange={handleChange} />
-      <Button type="submit" content="Add Reply" />
+      <Header as="h6">Add a Message</Header>
+      <Form.TextArea value={input} onChange={handleChange} onKeyDown={handleKeyDown} />
+      <Button hidden={input === ''} type="submit" content="Add Reply" />
     </Form>
   );
 }

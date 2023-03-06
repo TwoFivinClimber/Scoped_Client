@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Header, Grid, Image, Divider, Segment, List, Button, Dropdown,
 } from 'semantic-ui-react';
@@ -21,6 +21,10 @@ function JobDetail({ obj, onUpdate }) {
       deleteJob(obj.id).then(() => router.push('/'));
     }
   };
+  useEffect(() => {
+    console.warn(obj);
+    console.warn(user);
+  }, [user, obj]);
 
   return (
     <>
@@ -33,7 +37,7 @@ function JobDetail({ obj, onUpdate }) {
             <Dropdown
               className="link item"
               icon="ellipsis horizontal"
-              hidden={!obj.uid?.id === user.id}
+              hidden={obj.uid?.id !== user.id}
             >
               <Dropdown.Menu>
                 <Link passHref href={`/job/edit/${obj.id}`}>
@@ -54,7 +58,7 @@ function JobDetail({ obj, onUpdate }) {
           </Grid.Column>
           <Grid.Column className="job-crew-column">
             <Header as="h4">Crew
-              <Button hidden={!obj.uid === user.id} onClick={() => setOpen(!open)} size="small">Add Crew</Button>
+              <Button hidden={obj.uid?.id !== user.id} onClick={() => setOpen(!open)} size="small">Add Crew</Button>
             </Header>
             <List horizontal relaxed>
               {obj.crew?.map((i) => (
