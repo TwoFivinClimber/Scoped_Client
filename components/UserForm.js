@@ -1,23 +1,25 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { Card, Image } from 'react-bootstrap';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import {
+  Header, Image, Button, Checkbox, Form,
+} from 'semantic-ui-react';
 import AsyncSelect from 'react-select/async';
 import { useRouter } from 'next/router';
 import { registerUser } from '../utils/auth';
-import getSkills from '../utils/data/skills';
+import { getSkills } from '../utils/data/skills';
 import { useAuth } from '../utils/context/authContext';
+import { updateUserProfile } from '../utils/data/user';
 
-function UserForm({ user }) {
+function UserForm({ userObj }) {
   const initialState = {
-    firebase: user.uid,
-    name: user.fbUser.displayName,
-    image: user.fbUser.photoURL,
+    firebase: userObj.uid,
+    name: userObj.fbUser.displayName,
+    image: userObj.fbUser.photoURL,
     bio: '',
     skills: [],
   };
   const [input, setInput] = useState(initialState);
+  const [terms, setTerms] = useState(false);
   const router = useRouter();
   const { updateUser } = useAuth();
 
@@ -27,7 +29,6 @@ function UserForm({ user }) {
       ...prevState,
       [name]: value,
     }));
-    console.warn(user);
   };
   const handleSkills = (selected) => {
     setInput((prevState) => ({
@@ -36,42 +37,48 @@ function UserForm({ user }) {
     }));
   };
 
+  // registerUser(input)
+  // updateUser(userObj.uid)
   const handleSubmit = (e) => {
     e.preventDefault();
-    if ('valid' in user) {
+    if ('valid' in userObj) {
       input.skills = input.skills.map((s) => s.value);
-      registerUser(input).then(() => updateUser(user.uid)).then(() => router.push('/'));
+      registerUser(input).then(() => updateUser(userObj.uid));
     } else {
-      updateUser();
+      input.skills = input.skills.map((s) => s.value);
+      input.id = userObj.id;
+      updateUserProfile(input).then(() => updateUser(userObj.uid)).then(() => router.push(`/user/${userObj.id}`));
     }
   };
 
   useEffect(() => {
-    if (user.id) {
-      const fSkills = user?.skills.map((i) => ({ value: i.skill.id, label: i.skill.skill }));
-      const userObj = {
-        firebase: user.uid,
-        name: user.name,
-        image: user.image,
-        bio: user.bio,
+    if (userObj.id) {
+      const fSkills = userObj?.skills.map((i) => ({ value: i.skill.id, label: i.skill.skill }));
+      const userData = {
+        firebase: userObj.uid,
+        name: userObj.name,
+        image: userObj.image,
+        bio: userObj.bio,
         skills: fSkills,
       };
-      console.warn(userObj);
-      setInput(userObj);
+      setInput(userData);
     }
-  }, [user]);
+  }, [userObj]);
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Card style={{ display: 'flex', 'flex-direction': 'row', 'align-items': 'center' }}>
-        <Image value={input.image} src={user.fbUser.photoURL} style={{ height: '80px', width: '80px', 'border-radius': '50%' }} />
-        <Card.Title>{user.fbUser.displayName}</Card.Title>
-      </Card>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Bio</Form.Label>
-        <Form.Control name="bio" value={input.bio} required placeholder="Enter your Tag Line" onChange={handleChange} />
-        <Form.Label>Skills</Form.Label>
+      <Header as="h1">
+        <Image circular src={input.image} /> {userObj.fbUser.displayName}
+      </Header>
+      <Form.Field>
+        <label>Bio
+          <input name="bio" value={input.bio} onChange={handleChange} placeholder="Tell us about yourself" />
+        </label>
+      </Form.Field>
+      <Form.Field>
+        <label htmlFor="skillSelect">Skills</label>
         <AsyncSelect
+          id="skillSelect"
           isMulti
           cacheOptions
           defaultOptions
@@ -79,16 +86,17 @@ function UserForm({ user }) {
           onChange={handleSkills}
           loadOptions={getSkills}
         />
-      </Form.Group>
-      <Button variant="primary" type="submit">
-        Submit
-      </Button>
+      </Form.Field>
+      <Form.Field>
+        <Checkbox required value={terms} onClick={() => setTerms(!terms)} label="I agree to the Terms and Conditions" />
+      </Form.Field>
+      <Button positive type="submit">Submit</Button>
     </Form>
   );
 }
 
 UserForm.propTypes = {
-  user: PropTypes.shape({
+  userObj: PropTypes.shape({
     id: PropTypes.number,
     uid: PropTypes.string,
     name: PropTypes.string,

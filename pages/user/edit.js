@@ -6,7 +6,7 @@ function EditUser() {
   const { user } = useAuth();
 
   return (
-    <UserForm user={user} />
+    <UserForm userObj={user} />
   );
 }
 

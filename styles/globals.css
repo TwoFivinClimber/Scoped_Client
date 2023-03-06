@@ -46,7 +46,6 @@ body {
   justify-content: center;
   
 }
-
 .job-crew-card{
   display: flex;
   justify-content: space-evenly;
@@ -70,11 +69,51 @@ body {
 .job-images-div{
   display: flex;
   flex-direction: wrap;
-  overflow:scroll;
 }
 
 .job-image{
   height: 180px!important;
   width: 240px!important;
   object-fit: cover;
+}
+/*Modal Center */
+.dimmed.dimmable > .ui.animating.dimmer, .dimmed.dimmable > .ui.visible.dimmer, .ui.active.dimmer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ui.modal,
+.ui.active.modal {
+  margin: 0 auto!important;
+  top: auto !important;
+  left: auto !important;
+  transform-origin: center !important;
+  transition: all ease .5s;
+}
+
+/* Job Form */
+
+.job-form-buttons{
+  justify-content: space-around;
+}
+.job-form-image{
+  height: 200px;
+  width: 200px;
+  object-fit: cover;
+}
+.job-form-image-item{
+  width: 40%!important;
+}
+.job-form-image-item-div{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+/*Crew Modal*/
+.crew-modal{
+  height: auto;
+}
+.crew-modal-buttons{
+  justify-content: space-around;
 }

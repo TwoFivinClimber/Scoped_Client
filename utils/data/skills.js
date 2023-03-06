@@ -8,4 +8,10 @@ const getSkills = () => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-export default getSkills;
+const getUserSkills = (id) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/userskills?uid=${id}`)
+    .then((response) => resolve(response.json()))
+    .catch(reject);
+});
+
+export { getSkills, getUserSkills };

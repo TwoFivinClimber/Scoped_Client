@@ -19,7 +19,7 @@ const ViewDirectorBasedOnUserAuthStatus = ({ component: Component, pageProps }) 
     return (
       <>
         <NewNav /> {/* NavBar only visible if user is logged in and is in every view */}
-        <div className="container">{'valid' in user ? <UserForm user={user} /> : <Component {...pageProps} />}</div>
+        <div className="container">{'valid' in user ? <UserForm userObj={user} /> : <Component {...pageProps} />}</div>
       </>
     );
   }
