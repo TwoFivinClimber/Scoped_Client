@@ -3,10 +3,13 @@ import { Form, Button, Header } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { useAuth } from '../utils/context/authContext';
 import { createMessage } from '../utils/data/messages';
+import { useInvite } from '../utils/context/navContext';
 
-function MessageForm({ obj, jobId, onUpdate }) {
+function MessageForm({ jobId, onUpdate, authId }) {
   const [input, setInput] = useState('');
   const { user } = useAuth();
+  const { invites } = useInvite();
+  const jobInvite = invites?.find((i) => i.job?.id === jobId);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,7 +24,6 @@ function MessageForm({ obj, jobId, onUpdate }) {
 
   const handleChange = (e) => {
     setInput(e.target.value);
-    console.warn(input.length > 0);
   };
 
   const handleKeyDown = (e) => {
@@ -31,15 +33,13 @@ function MessageForm({ obj, jobId, onUpdate }) {
   };
 
   useEffect(() => {
-    if (obj.id) {
-      setInput(obj.content);
-    }
-  }, [obj]);
+    console.warn(jobInvite?.accepted);
+  }, [invites]);
 
   return (
     <Form onSubmit={handleSubmit} reply>
       <Header as="h6">Add a Message</Header>
-      <Form.TextArea value={input} onChange={handleChange} onKeyDown={handleKeyDown} />
+      <Form.TextArea hidden={!(jobInvite?.accepted || authId === user.id)} value={input} onChange={handleChange} onKeyDown={handleKeyDown} />
       <Button hidden={input === ''} type="submit" content="Add Reply" />
     </Form>
   );
@@ -48,10 +48,7 @@ function MessageForm({ obj, jobId, onUpdate }) {
 MessageForm.propTypes = {
   jobId: PropTypes.number,
   onUpdate: PropTypes.func.isRequired,
-  obj: PropTypes.shape({
-    id: PropTypes.number,
-    content: PropTypes.string,
-  }).isRequired,
+  authId: PropTypes.number.isRequired,
 };
 
 MessageForm.defaultProps = {

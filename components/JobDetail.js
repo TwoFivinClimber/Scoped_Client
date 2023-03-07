@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Header, Grid, Image, Divider, Segment, List, Button, Dropdown,
 } from 'semantic-ui-react';
@@ -21,10 +21,6 @@ function JobDetail({ obj, onUpdate }) {
       deleteJob(obj.id).then(() => router.push('/'));
     }
   };
-  useEffect(() => {
-    console.warn(obj);
-    console.warn(user);
-  }, [user, obj]);
 
   return (
     <>

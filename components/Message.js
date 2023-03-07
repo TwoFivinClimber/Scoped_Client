@@ -76,6 +76,7 @@ Message.propTypes = {
     }),
   }).isRequired,
   onUpdate: PropTypes.func.isRequired,
+  // visible: PropTypes.bool.isRequired,
 };
 
 export default Message;
