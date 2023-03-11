@@ -35,6 +35,12 @@ function Message({ obj, onUpdate }) {
     });
   };
 
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      handleSubmit(e);
+    }
+  };
+
   return (
     <Comment>
       <Comment.Avatar src={obj.uid?.image} />
@@ -44,13 +50,13 @@ function Message({ obj, onUpdate }) {
           <div>{obj?.datetime.split('T')[0]} {obj?.datetime.split('T')[1]}</div>
         </Comment.Metadata>
         <Comment.Text hidden={edit}>{obj?.content}</Comment.Text>
-        <Form.Input hidden={!edit} fluid onChange={handleChange} value={editMessage} />
+        <Form.Input hidden={!edit} fluid onChange={handleChange} onKeyDown={handleKeyDown} value={editMessage} />
         <Comment.Actions>
           <Comment.Action hidden={!edit} onClick={handleSubmit}>Submit</Comment.Action>
           <Comment.Action hidden={!edit} onClick={() => setEdit(!edit)}>Cancel</Comment.Action>
-          <Comment.Action hidden={!obj.uid.id === user.id || edit} onClick={editThisComment}>Edit</Comment.Action>
-          <Comment.Action hidden={!obj.uid.id === user.id || edit} onClick={deleteThisMessage}>Delete</Comment.Action>
-          <Comment.Action hidden={obj.uid.id === user.id}>Reply</Comment.Action>
+          <Comment.Action hidden={obj.uid.id !== user.id || edit} onClick={editThisComment}>Edit</Comment.Action>
+          <Comment.Action hidden={obj.uid.id !== user.id || edit} onClick={deleteThisMessage}>Delete</Comment.Action>
+          {/* <Comment.Action hidden={obj.uid.id === user.id}>Reply</Comment.Action> */}
         </Comment.Actions>
       </Comment.Content>
       {/* Reply goes here */}
@@ -70,6 +76,7 @@ Message.propTypes = {
     }),
   }).isRequired,
   onUpdate: PropTypes.func.isRequired,
+  // visible: PropTypes.bool.isRequired,
 };
 
 export default Message;

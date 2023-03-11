@@ -33,7 +33,7 @@ function JobDetail({ obj, onUpdate }) {
             <Dropdown
               className="link item"
               icon="ellipsis horizontal"
-              hidden={!obj.uid?.id === user.id}
+              hidden={obj.uid?.id !== user.id}
             >
               <Dropdown.Menu>
                 <Link passHref href={`/job/edit/${obj.id}`}>
@@ -54,7 +54,7 @@ function JobDetail({ obj, onUpdate }) {
           </Grid.Column>
           <Grid.Column className="job-crew-column">
             <Header as="h4">Crew
-              <Button hidden={!obj.uid === user.id} onClick={() => setOpen(!open)} size="small">Add Crew</Button>
+              <Button hidden={obj.uid?.id !== user.id} onClick={() => setOpen(!open)} size="small">Add Crew</Button>
             </Header>
             <List horizontal relaxed>
               {obj.crew?.map((i) => (
@@ -62,7 +62,7 @@ function JobDetail({ obj, onUpdate }) {
                   <Image avatar src={i.uid.image} />
                   <List.Content>
                     <List.Header>{i.uid.name}</List.Header>
-                    {i.skill.skill}
+                    {i.skill.skill}{`-${i.accepted}`}
                   </List.Content>
                 </List.Item>
               ))}

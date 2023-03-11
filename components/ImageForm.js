@@ -37,7 +37,7 @@ function ImageForm({
         handleClose();
       });
     } else {
-      createJobImages(images[0]).then(() => {
+      createJobImages(images).then(() => {
         onUpdate();
         handleClose();
       });

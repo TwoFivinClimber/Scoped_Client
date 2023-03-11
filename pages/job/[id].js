@@ -8,12 +8,14 @@ import Message from '../../components/Message';
 import MessageForm from '../../components/MessageForm';
 import Images from '../../components/Images';
 import Gear from '../../components/Gear';
+import { useAuth } from '../../utils/context/authContext';
 
 function Job() {
   const [job, setJob] = useState({});
   const [messages, setMessages] = useState([]);
   const router = useRouter();
   const { id } = router.query;
+  const { user } = useAuth();
 
   const getTheContent = () => {
     getSingleJob(id).then(setJob);
@@ -26,13 +28,13 @@ function Job() {
 
   useEffect(() => {
     getTheContent();
-  }, [router]);
+  }, [router, user]);
 
   return (
     <>
       <JobDetail obj={job} onUpdate={getTheContent} />
       <Gear authId={job.uid?.id} jobId={job.id} gearArr={job.gear} onUpdate={getTheContent} />
-      <Images imageArr={job.images} jobId={job.id} onUpdate={getTheContent} />
+      <Images authId={job.uid?.id} imageArr={job.images} jobId={job.id} onUpdate={getTheContent} />
       <Segment>
         <Header as="h3">Messages</Header>
         <Comment.Group>
@@ -40,7 +42,7 @@ function Job() {
             <Message key={i.content} obj={i} onUpdate={updateMessages} />
           ))}
         </Comment.Group>
-        <MessageForm obj={{}} jobId={job.id} onUpdate={updateMessages} />
+        <MessageForm crew={job.crew} jobId={job.id} authId={job.uid?.id} onUpdate={updateMessages} />
       </Segment>
     </>
   );

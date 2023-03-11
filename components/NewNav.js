@@ -7,14 +7,21 @@ import {
 } from 'semantic-ui-react';
 // import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useAuth } from '../utils/context/authContext';
 import { signOut } from '../utils/auth';
 // import { getInvitesByUser } from '../utils/data/invites';
 import { useInvite } from '../utils/context/navContext';
 
 export default function NavBar() {
+  const router = useRouter();
   const { user } = useAuth();
   const { invites } = useInvite();
+
+  const signMeOut = () => {
+    signOut();
+    router.push('/');
+  };
 
   return (
 
@@ -54,7 +61,7 @@ export default function NavBar() {
 
       </Menu.Item>
       <Menu.Item
-        onClick={signOut}
+        onClick={signMeOut}
       >
         <Button inverted color="red">Sign Out</Button>
       </Menu.Item>

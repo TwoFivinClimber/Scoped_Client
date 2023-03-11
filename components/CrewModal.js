@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Modal, Button, Form, Segment, List, Image, Header, Comment,
 } from 'semantic-ui-react';
@@ -13,17 +13,25 @@ import { getUserSkills } from '../utils/data/skills';
 function CrewModal({
   jobId, open, setOpen, crew, onUpdate,
 }) {
+  const [key, setKey] = useState([]);
   const [selected, setSelected] = useState({});
   const [selectedSkills, setSelectedSkills] = useState({});
+  const [disabled, setDisabled] = useState(false);
 
   const closeModal = () => {
     setSelected({});
     setOpen(!open);
+    setDisabled(false);
+  };
+
+  const refreshCrewOptions = () => {
+    setKey(Math.floor(Math.random() * 10));
   };
 
   const setEdit = (user) => {
-    getUserSkills(user.id).then((skills) => {
+    getUserSkills(user.uid.id).then((skills) => {
       const member = { value: user.uid.id, label: user.uid.name };
+      console.warn(user);
       setSelected({
         id: user.id,
         value: user.uid.id,
@@ -36,6 +44,7 @@ function CrewModal({
         label: i.label,
       })));
     });
+    setDisabled(true);
   };
 
   const getAvailableCrew = () => new Promise((resolve) => {
@@ -73,6 +82,7 @@ function CrewModal({
       };
       updateCrew(crewObj).then(() => {
         onUpdate();
+        setOpen(!open);
       });
     } else {
       const crewObj = {
@@ -85,6 +95,7 @@ function CrewModal({
       });
     }
     setSelected({});
+    refreshCrewOptions();
   };
 
   const handleDelete = (user) => {
@@ -93,12 +104,17 @@ function CrewModal({
         onUpdate();
       });
     }
+    refreshCrewOptions();
   };
+
+  useEffect(() => {
+    refreshCrewOptions();
+  }, []);
 
   return (
     <Modal
       className="crew-modal"
-      onClose={() => setOpen(false)}
+      onClose={() => closeModal()}
       onOpen={() => setOpen(true)}
       open={open}
     >
@@ -108,13 +124,14 @@ function CrewModal({
           <Form.Field>
             <label htmlFor="userSelect">Select a Member</label>
             <AsyncSelect
+              key={JSON.stringify(key)}
               id="userSelect"
               defaultOptions
-              cacheOptions={false}
+              cacheOptions
               value={selected.member || ''}
               onChange={handleCrewSelect}
               loadOptions={getAvailableCrew}
-              required
+              isDisabled={disabled}
             />
           </Form.Field>
           <Form.Field fluid>
@@ -122,11 +139,9 @@ function CrewModal({
             <Select
               id="skillSelect"
               defaultOptions
-              cacheOptions={false}
               value={selected.skill || ''}
               onChange={handleSkillSelect}
               options={selectedSkills}
-              required
             />
           </Form.Field>
           <Form.Group className="crew-modal-buttons" widths="equal">

@@ -117,3 +117,11 @@ body {
 .crew-modal-buttons{
   justify-content: space-around;
 }
+
+/* Index Page */
+
+.index-jobs-div{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
