@@ -3,13 +3,14 @@ import { Form, Button, Header } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { useAuth } from '../utils/context/authContext';
 import { createMessage } from '../utils/data/messages';
-import { useInvite } from '../utils/context/navContext';
 
-function MessageForm({ jobId, onUpdate, authId }) {
+function MessageForm({
+  jobId, onUpdate, authId, crew,
+}) {
   const [input, setInput] = useState('');
   const { user } = useAuth();
-  const { invites } = useInvite();
-  const jobInvite = invites?.find((i) => i.job?.id === jobId);
+
+  const jobInvite = crew?.find((i) => i.uid.id === user.id);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,8 +34,8 @@ function MessageForm({ jobId, onUpdate, authId }) {
   };
 
   useEffect(() => {
-    console.warn(jobInvite?.accepted);
-  }, [invites]);
+    console.warn(crew);
+  }, [crew]);
 
   return (
     <Form onSubmit={handleSubmit} reply>
@@ -49,6 +50,14 @@ MessageForm.propTypes = {
   jobId: PropTypes.number,
   onUpdate: PropTypes.func.isRequired,
   authId: PropTypes.number.isRequired,
+  crew: PropTypes.arrayOf(
+    PropTypes.shape({
+      accepted: PropTypes.bool,
+      uid: PropTypes.shape({
+        id: PropTypes.number,
+      }),
+    }),
+  ).isRequired,
 };
 
 MessageForm.defaultProps = {

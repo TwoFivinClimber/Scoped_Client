@@ -42,7 +42,7 @@ function Job() {
             <Message key={i.content} obj={i} onUpdate={updateMessages} />
           ))}
         </Comment.Group>
-        <MessageForm jobId={job.id} authId={job.uid?.id} onUpdate={updateMessages} />
+        <MessageForm crew={job.crew} jobId={job.id} authId={job.uid?.id} onUpdate={updateMessages} />
       </Segment>
     </>
   );

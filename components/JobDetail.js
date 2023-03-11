@@ -62,7 +62,7 @@ function JobDetail({ obj, onUpdate }) {
                   <Image avatar src={i.uid.image} />
                   <List.Content>
                     <List.Header>{i.uid.name}</List.Header>
-                    {i.skill.skill}
+                    {i.skill.skill}{`-${i.accepted}`}
                   </List.Content>
                 </List.Item>
               ))}
