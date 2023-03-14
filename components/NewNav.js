@@ -7,21 +7,14 @@ import {
 } from 'semantic-ui-react';
 // import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useAuth } from '../utils/context/authContext';
 import { signOut } from '../utils/auth';
 // import { getInvitesByUser } from '../utils/data/invites';
 import { useInvite } from '../utils/context/navContext';
 
 export default function NavBar() {
-  const router = useRouter();
   const { user } = useAuth();
   const { invites } = useInvite();
-
-  const signMeOut = () => {
-    signOut();
-    router.push('/');
-  };
 
   return (
 
@@ -37,6 +30,23 @@ export default function NavBar() {
           <Icon hidden={!invites?.length} name="bell" size="large" color="yellow" inverted />
         </Menu.Item>
       </Link>
+      <Menu.Item>
+        <Dropdown
+          text="Companies"
+          pointing
+        >
+          <Dropdown.Menu fluid className="company-dropdown">
+            {user.companies?.map((cmp) => (
+              <Link key={cmp.id} passHref href={`/company/${cmp.company.id}`}>
+                <Dropdown.Item
+                  image={cmp.company.logo}
+                  content={cmp.company.name}
+                />
+              </Link>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+      </Menu.Item>
       <Menu.Item
         className="scoped-nav"
         content="Scoped"
@@ -61,7 +71,7 @@ export default function NavBar() {
 
       </Menu.Item>
       <Menu.Item
-        onClick={signMeOut}
+        onClick={signOut}
       >
         <Button inverted color="red">Sign Out</Button>
       </Menu.Item>
