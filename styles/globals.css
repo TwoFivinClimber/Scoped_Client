@@ -117,3 +117,12 @@ body {
 .crew-modal-buttons{
   justify-content: space-around;
 }
+
+/* Blog */
+.blog-title-header{
+  display: flex;
+  justify-content: space-between;
+}
+.blog-user-tag{
+  display: flex;
+}

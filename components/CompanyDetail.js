@@ -30,13 +30,22 @@ function CompanyDetail({ obj }) {
             </Dropdown>
           </Grid.Column>
         </Grid>
-        <Grid columns={2} divided>
+        <Grid columns={3} divided>
           <Grid.Column as="h5">
             <li>{obj.type}</li>
             <Divider />
             <li>{obj.location}</li>
             <Divider />
             <li>Scoped Since: {obj.creation}</li>
+            <Divider />
+            <li>Owner:</li>
+            <Divider />
+            <li>707-621-1665</li>
+            <Divider />
+            <li>companyemail@gmail.com</li>
+          </Grid.Column>
+          <Grid.Column>
+            <Image centered size="medium" src={obj.logo} />
           </Grid.Column>
           <Grid.Column className="job-crew-column">
             <Header as="h4">Employees
@@ -53,7 +62,7 @@ function CompanyDetail({ obj }) {
             </List>
           </Grid.Column>
         </Grid>
-        <Header as="h3">Job Details</Header>
+        <Header as="h3">About</Header>
         <p>{obj.description}</p>
       </Segment>
     </>
@@ -65,6 +74,7 @@ CompanyDetail.propTypes = {
     id: PropTypes.number,
     owner: PropTypes.shape({
       id: PropTypes.number,
+      name: PropTypes.string,
     }),
     name: PropTypes.string,
     image: PropTypes.string,
