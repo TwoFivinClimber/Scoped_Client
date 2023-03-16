@@ -23,9 +23,8 @@ function CompanyDetail({ obj }) {
             >
               <Dropdown.Menu>
                 <Link passHref href="/">
-                  <Dropdown.Item>Edit</Dropdown.Item>
+                  <Dropdown.Item>Admin</Dropdown.Item>
                 </Link>
-                <Dropdown.Item>Delete</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </Grid.Column>
@@ -38,11 +37,11 @@ function CompanyDetail({ obj }) {
             <Divider />
             <li>Scoped Since: {obj.creation}</li>
             <Divider />
-            <li>Owner:</li>
+            <li>Owner: {obj.owner?.name}</li>
             <Divider />
             <li>707-621-1665</li>
             <Divider />
-            <li>companyemail@gmail.com</li>
+            <li>{obj.owner?.email}</li>
           </Grid.Column>
           <Grid.Column>
             <Image centered size="medium" src={obj.logo} />
@@ -75,6 +74,7 @@ CompanyDetail.propTypes = {
     owner: PropTypes.shape({
       id: PropTypes.number,
       name: PropTypes.string,
+      email: PropTypes.string,
     }),
     name: PropTypes.string,
     image: PropTypes.string,
