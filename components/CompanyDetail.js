@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { useAuth } from '../utils/context/authContext';
 
-function CompanyDetail({ obj }) {
+function CompanyDetail({ admin, obj }) {
   const { user } = useAuth();
   return (
     <>
@@ -22,8 +22,11 @@ function CompanyDetail({ obj }) {
               hidden={obj.owner?.id !== user.id}
             >
               <Dropdown.Menu>
-                <Link passHref href="/">
-                  <Dropdown.Item>Admin</Dropdown.Item>
+                <Link passHref href={`/company/admin/${obj.id}`}>
+                  <Dropdown.Item hidden={admin}>Admin</Dropdown.Item>
+                </Link>
+                <Link passHref href={`/company/edit/${obj.id}`}>
+                  <Dropdown.Item hidden={!admin}>Edit</Dropdown.Item>
                 </Link>
               </Dropdown.Menu>
             </Dropdown>
@@ -69,6 +72,7 @@ function CompanyDetail({ obj }) {
 }
 
 CompanyDetail.propTypes = {
+  admin: PropTypes.bool.isRequired,
   obj: PropTypes.shape({
     id: PropTypes.number,
     owner: PropTypes.shape({
@@ -85,7 +89,7 @@ CompanyDetail.propTypes = {
     creation: PropTypes.string,
     employees: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.string,
+        id: PropTypes.number,
         user: PropTypes.shape({
           name: PropTypes.string,
           image: PropTypes.string,

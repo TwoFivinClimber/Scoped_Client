@@ -17,5 +17,18 @@ const createJobImage = (imageObj) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-// eslint-disable-next-line import/prefer-default-export
-export { createJobImage };
+const createCompanyImage = (imageFile) => new Promise((resolve, reject) => {
+  const key = Math.floor(1000 + Math.random() * 9000);
+  const formdata = new FormData();
+  formdata.append('image', imageFile);
+  formdata.append('key', `${imageFile.name}${key}`);
+  const requestOptions = {
+    method: 'POST',
+    body: formdata,
+  };
+  fetch(`${dbUrl}/images`, requestOptions)
+    .then((response) => resolve(response.json()))
+    .catch(reject);
+});
+
+export { createJobImage, createCompanyImage };

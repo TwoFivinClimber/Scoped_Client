@@ -66,6 +66,9 @@ export default function NavBar() {
             <Link passHref href="/job/new">
               <Dropdown.Item>Create Job</Dropdown.Item>
             </Link>
+            <Link passHref href="/company/new">
+              <Dropdown.Item>Create Company</Dropdown.Item>
+            </Link>
           </Dropdown.Menu>
         </Dropdown>
 

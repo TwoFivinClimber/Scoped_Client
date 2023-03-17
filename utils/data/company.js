@@ -8,5 +8,16 @@ const getCompany = (id) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-// eslint-disable-next-line import/prefer-default-export
-export { getCompany };
+const createCompany = (obj) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/companies`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(obj),
+  })
+    .then((response) => resolve(response.json()))
+    .catch(reject);
+});
+
+export { getCompany, createCompany };

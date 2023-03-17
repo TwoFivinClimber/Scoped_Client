@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Form, Button, Header } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { useAuth } from '../utils/context/authContext';
@@ -32,10 +32,6 @@ function MessageForm({
       handleSubmit(e);
     }
   };
-
-  useEffect(() => {
-    console.warn(crew);
-  }, [crew]);
 
   return (
     <Form onSubmit={handleSubmit} reply>
