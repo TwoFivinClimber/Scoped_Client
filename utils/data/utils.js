@@ -21,7 +21,7 @@ const createCompanyImage = (imageFile) => new Promise((resolve, reject) => {
   const key = Math.floor(1000 + Math.random() * 9000);
   const formdata = new FormData();
   formdata.append('image', imageFile);
-  formdata.append('key', `${imageFile.name}${key}`);
+  formdata.append('key', `${key}${imageFile.name}`);
   const requestOptions = {
     method: 'POST',
     body: formdata,

@@ -1,13 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  Header, Grid, Image, Divider, Segment, List, Dropdown,
+  Header, Grid, Image, Divider, Segment, List, Dropdown, Confirm, Button,
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useAuth } from '../utils/context/authContext';
+import { deleteCompany } from '../utils/data/company';
+import LogoModal from './LogoModal';
 
-function CompanyDetail({ admin, obj }) {
+function CompanyDetail({ admin, obj, onUpdate }) {
   const { user } = useAuth();
+  const [confirm, setConfirm] = useState(false);
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+
+  const handleDelete = () => {
+    deleteCompany(obj.id);
+    router.push('/');
+  };
+
   return (
     <>
       <Segment>
@@ -26,10 +38,19 @@ function CompanyDetail({ admin, obj }) {
                   <Dropdown.Item hidden={admin}>Admin</Dropdown.Item>
                 </Link>
                 <Link passHref href={`/company/edit/${obj.id}`}>
-                  <Dropdown.Item hidden={!admin}>Edit</Dropdown.Item>
+                  <Dropdown.Item hidden={!admin}>Edit Info</Dropdown.Item>
                 </Link>
+                <Dropdown.Item onClick={() => setConfirm(!confirm)} hidden={!admin}>Delete Company</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
+            <Confirm
+              className="crew-modal"
+              open={confirm}
+              cancelButton="Never mind"
+              confirmButton="Delete It"
+              onCancel={() => setConfirm(!confirm)}
+              onConfirm={() => handleDelete()}
+            />
           </Grid.Column>
         </Grid>
         <Grid columns={3} divided>
@@ -48,6 +69,7 @@ function CompanyDetail({ admin, obj }) {
           </Grid.Column>
           <Grid.Column>
             <Image centered size="medium" src={obj.logo} />
+            <Button centered hidden={!admin} onClick={() => setOpen(!open)}>Upload Logo</Button>
           </Grid.Column>
           <Grid.Column className="job-crew-column">
             <Header as="h4">Employees
@@ -67,12 +89,14 @@ function CompanyDetail({ admin, obj }) {
         <Header as="h3">About</Header>
         <p>{obj.description}</p>
       </Segment>
+      <LogoModal open={open} setOpen={setOpen} logo={obj.logo} cid={obj.id} onUpdate={onUpdate} />
     </>
   );
 }
 
 CompanyDetail.propTypes = {
   admin: PropTypes.bool.isRequired,
+  onUpdate: PropTypes.func.isRequired,
   obj: PropTypes.shape({
     id: PropTypes.number,
     owner: PropTypes.shape({

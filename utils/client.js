@@ -10,6 +10,8 @@ const firebaseCredentials = {
 const clientCredentials = {
   ...firebaseCredentials,
   databaseURL: process.env.NEXT_PUBLIC_DATABASE_URL,
+  awsKeyId: process.env.AWS_KEY_ID,
+  awsSecret: process.env.AWS_SECRET,
 };
 
 if (!firebase.apps.length) {

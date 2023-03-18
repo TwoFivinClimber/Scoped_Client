@@ -126,3 +126,22 @@ body {
 .blog-user-tag{
   display: flex;
 }
+
+/* Company Detail  */
+
+.altLogo{
+  display: block;
+  height: 20rem;
+  width: 20rem;
+  border-radius: 50%;
+  background-color: firebrick;
+  text-align: center;
+  font-size: 10rem;
+}
+
+/* logo modal */
+.logo-modal-image{
+  object-fit: cover;
+  height: 20rem!important;
+  width: 20rem!important;
+}

@@ -18,7 +18,7 @@ function Admin() {
 
   return (
     // eslint-disable-next-line react/jsx-boolean-value
-    <CompanyDetail admin={true} obj={company} />
+    <CompanyDetail admin={true} obj={company} onUpdate={getTheContent} />
   );
 }
 

@@ -22,7 +22,7 @@ function CompanyPage() {
 
   return (
     <>
-      <CompanyDetail admin={false} obj={company} />
+      <CompanyDetail admin={false} obj={company} onUpdate={getTheContent} />
       <Blog cid={company.id} blogs={blogs} onUpdate={getTheContent} />
     </>
   );
