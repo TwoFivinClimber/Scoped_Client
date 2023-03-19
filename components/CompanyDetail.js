@@ -8,12 +8,16 @@ import { useRouter } from 'next/router';
 import { useAuth } from '../utils/context/authContext';
 import { deleteCompany } from '../utils/data/company';
 import LogoModal from './LogoModal';
+import EmployeeManager from './EmployeeManager';
 
-function CompanyDetail({ admin, obj, onUpdate }) {
+function CompanyDetail({
+  admin, obj, employees, onUpdate,
+}) {
   const { user } = useAuth();
   const [confirm, setConfirm] = useState(false);
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [abri, setAbri] = useState(false);
 
   const handleDelete = () => {
     deleteCompany(obj.id);
@@ -84,12 +88,14 @@ function CompanyDetail({ admin, obj, onUpdate }) {
                 </List.Item>
               ))}
             </List>
+            <Button hidden={!admin} onClick={() => setAbri(!abri)}>Manage Employees</Button>
           </Grid.Column>
         </Grid>
         <Header as="h3">About</Header>
         <p>{obj.description}</p>
       </Segment>
       <LogoModal open={open} setOpen={setOpen} logo={obj.logo} cid={obj.id} onUpdate={onUpdate} />
+      <EmployeeManager employees={employees} abri={abri} setAbri={setAbri} onUpdate={onUpdate} />
     </>
   );
 }
@@ -97,6 +103,11 @@ function CompanyDetail({ admin, obj, onUpdate }) {
 CompanyDetail.propTypes = {
   admin: PropTypes.bool.isRequired,
   onUpdate: PropTypes.func.isRequired,
+  employees: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+    }),
+  ).isRequired,
   obj: PropTypes.shape({
     id: PropTypes.number,
     owner: PropTypes.shape({
