@@ -44,6 +44,9 @@ function CompanyDetail({
                 <Link passHref href={`/company/edit/${obj.id}`}>
                   <Dropdown.Item hidden={!admin}>Edit Info</Dropdown.Item>
                 </Link>
+                <Link passHref href={`/company/admin/invites/${obj.id}`}>
+                  <Dropdown.Item hidden={!admin}>Invites</Dropdown.Item>
+                </Link>
                 <Dropdown.Item onClick={() => setConfirm(!confirm)} hidden={!admin}>Delete Company</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
@@ -95,7 +98,7 @@ function CompanyDetail({
         <p>{obj.description}</p>
       </Segment>
       <LogoModal open={open} setOpen={setOpen} logo={obj.logo} cid={obj.id} onUpdate={onUpdate} />
-      <EmployeeManager employees={employees} abri={abri} setAbri={setAbri} onUpdate={onUpdate} />
+      <EmployeeManager employees={employees} companySkills={obj.skills} cid={obj.id} abri={abri} setAbri={setAbri} onUpdate={onUpdate} />
     </>
   );
 }
@@ -129,6 +132,12 @@ CompanyDetail.propTypes = {
           name: PropTypes.string,
           image: PropTypes.string,
         }),
+      }),
+    ),
+    skills: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number,
+        skill: PropTypes.string,
       }),
     ),
   }).isRequired,

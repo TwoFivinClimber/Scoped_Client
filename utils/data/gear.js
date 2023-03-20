@@ -8,6 +8,18 @@ const getGear = () => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+const createGear = (obj) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/gear`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(obj),
+  })
+    .then(resolve)
+    .catch(reject);
+});
+
 const createJobGear = (obj) => new Promise((resolve, reject) => {
   fetch(`${dbUrl}/jobgears`, {
     method: 'POST',
@@ -32,4 +44,14 @@ const updateJobGear = (obj) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-export { getGear, createJobGear, updateJobGear };
+const deleteGear = (id) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/gear/${id}`, {
+    method: 'DELETE',
+  })
+    .then(resolve)
+    .catch(reject);
+});
+
+export {
+  getGear, createJobGear, updateJobGear, createGear, deleteGear,
+};

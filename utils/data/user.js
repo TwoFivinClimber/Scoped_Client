@@ -8,6 +8,12 @@ const getUser = (id) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+const getAvailableUsers = (cid) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/users?cid=${cid}`)
+    .then((resp) => resolve(resp.json()))
+    .catch(reject);
+});
+
 const updateUserProfile = (obj) => new Promise((resolve, reject) => {
   fetch(`${dbUrl}/users/${obj.id}`, {
     method: 'PUT',
@@ -65,5 +71,5 @@ const deleteCrew = (id) => new Promise((resolve, reject) => {
 });
 
 export {
-  getUser, getCrewForJob, createCrew, updateCrew, deleteCrew, deleteUser, updateUserProfile,
+  getUser, getCrewForJob, createCrew, updateCrew, deleteCrew, deleteUser, updateUserProfile, getAvailableUsers,
 };

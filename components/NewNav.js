@@ -14,7 +14,8 @@ import { useInvite } from '../utils/context/navContext';
 
 export default function NavBar() {
   const { user } = useAuth();
-  const { invites } = useInvite();
+  const { invites, compInvites } = useInvite();
+  // const invitations = [...invites, ...compInvites];
 
   return (
 
@@ -27,7 +28,7 @@ export default function NavBar() {
       <Link passHref href="/invites">
         <Menu.Item>
           Invites
-          <Icon hidden={!invites?.length} name="bell" size="large" color="yellow" inverted />
+          <Icon hidden={!compInvites?.length || invites?.length} name="bell" size="large" color="yellow" inverted />
         </Menu.Item>
       </Link>
       <Menu.Item>

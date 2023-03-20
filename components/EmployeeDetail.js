@@ -1,16 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Item, List, Form, Button,
 } from 'semantic-ui-react';
-import AsyncSelect from 'react-select';
+import Select from 'react-select';
+import { createUserSkills } from '../utils/data/skills';
 
-function EmployeeDetail({ employee }) {
+function EmployeeDetail({
+  employee, companySkills, cid, onUpdate,
+}) {
   const [edit, setEdit] = useState(false);
+  const [skills, setSkills] = useState([]);
 
-  const handleSubmit = () => {
-    console.warn('Submit');
+  const handleSelect = (e) => {
+    setSkills(e);
   };
+  const handleSubmit = () => {
+    const payload = {
+      uid: employee.id,
+      cid,
+      skills: skills.map((i) => i.id),
+    };
+    createUserSkills(payload).then(() => {
+      onUpdate();
+      setEdit(!edit);
+    });
+  };
+
+  const handleCancel = () => {
+    setEdit(!edit);
+  };
+
+  useEffect(() => {
+    if (employee.skills) {
+      const empSkills = employee.skills.map((i) => ({
+        id: i.skill.id,
+        skill: i.skill.skill,
+      }));
+      setSkills(empSkills);
+    }
+  }, [employee]);
+
   return (
     <Item>
       <Item.Image size="small" src={employee.user?.image} />
@@ -26,13 +56,20 @@ function EmployeeDetail({ employee }) {
           <Form hidden={!edit} onSubmit={handleSubmit}>
             <Form.Field>
               <label htmlFor="userSelect">Edit Skills</label>
-              <AsyncSelect
+              <Select
                 id="userSelect"
                 isMulti
                 cacheOptions
                 defaultOptions
+                onChange={handleSelect}
+                getOptionLabel={(skill) => skill.skill}
+                getOptionValue={(skill) => skill.id}
+                value={skills}
+                options={companySkills}
               />
             </Form.Field>
+            <Button type="submit" inverted color="green">Submit</Button>
+            <Button type="button" inverted color="red" onClick={() => handleCancel()}>Cancel</Button>
           </Form>
         </Item.Description>
         <Item.Extra>Since: {employee.creation}</Item.Extra>
@@ -46,6 +83,8 @@ function EmployeeDetail({ employee }) {
 }
 
 EmployeeDetail.propTypes = {
+  onUpdate: PropTypes.func.isRequired,
+  cid: PropTypes.number.isRequired,
   employee: PropTypes.shape({
     id: PropTypes.number,
     creation: PropTypes.string,
@@ -65,6 +104,12 @@ EmployeeDetail.propTypes = {
       }),
     ),
   }).isRequired,
+  companySkills: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      skill: PropTypes.string,
+    }),
+  ).isRequired,
 };
 
 export default EmployeeDetail;
