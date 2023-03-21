@@ -5,17 +5,22 @@ import {
 import {
   Menu, Button, Icon, Image, Dropdown,
 } from 'semantic-ui-react';
-// import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useAuth } from '../utils/context/authContext';
 import { signOut } from '../utils/auth';
-// import { getInvitesByUser } from '../utils/data/invites';
 import { useInvite } from '../utils/context/navContext';
 
 export default function NavBar() {
   const { user } = useAuth();
   const { invites, compInvites } = useInvite();
-  // const invitations = [...invites, ...compInvites];
+  const router = useRouter();
+  // const invitations = invites.concat(compInvites);
+
+  const signOutFunction = () => {
+    router.push('/');
+    signOut();
+  };
 
   return (
 
@@ -28,7 +33,7 @@ export default function NavBar() {
       <Link passHref href="/invites">
         <Menu.Item>
           Invites
-          <Icon hidden={!compInvites?.length || invites?.length} name="bell" size="large" color="yellow" inverted />
+          <Icon hidden={!(invites?.length || compInvites?.length)} name="bell" size="large" color="yellow" inverted />
         </Menu.Item>
       </Link>
       <Menu.Item>
@@ -36,7 +41,7 @@ export default function NavBar() {
           text="Companies"
           pointing
         >
-          <Dropdown.Menu fluid className="company-dropdown">
+          <Dropdown.Menu className="company-dropdown">
             {user.companies?.map((cmp) => (
               <Link key={cmp.id} passHref href={`/company/${cmp.company.id}`}>
                 <Dropdown.Item
@@ -75,7 +80,7 @@ export default function NavBar() {
 
       </Menu.Item>
       <Menu.Item
-        onClick={signOut}
+        onClick={signOutFunction}
       >
         <Button inverted color="red">Sign Out</Button>
       </Menu.Item>

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState } from 'react';
 import {
   Header, Grid, Image, Divider, Segment, List, Button, Dropdown,
@@ -9,16 +10,16 @@ import CrewModal from './CrewModal';
 import { useAuth } from '../utils/context/authContext';
 import { deleteJob } from '../utils/data/job';
 
-function JobDetail({ obj, onUpdate }) {
-  const date = obj.datetime?.split('T')[0];
-  const time = obj.datetime?.split('T')[1].split('Z')[0];
+function JobDetail({ job, onUpdate }) {
+  const date = job.datetime?.split('T')[0];
+  const time = job.datetime?.split('T')[1].split('Z')[0];
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
   const router = useRouter();
 
   const deleteThisJob = () => {
     if (window.confirm('Are you sure you want to delete this job?')) {
-      deleteJob(obj.id).then(() => router.push('/'));
+      deleteJob(job.id).then(() => router.push('/'));
     }
   };
 
@@ -27,16 +28,17 @@ function JobDetail({ obj, onUpdate }) {
       <Segment>
         <Grid columns={2}>
           <Grid.Column>
-            <Header as="h1">{obj?.title}</Header>
+            <Header as="h1">{job?.title}</Header>
+            <Header>{job.company?.name}</Header>
           </Grid.Column>
           <Grid.Column textAlign="right">
             <Dropdown
               className="link item"
               icon="ellipsis horizontal"
-              hidden={obj.uid?.id !== user.id}
+              hidden={job.uid?.id !== user.id}
             >
               <Dropdown.Menu>
-                <Link passHref href={`/job/edit/${obj.id}`}>
+                <Link passHref href={`/job/edit/${job.id}`}>
                   <Dropdown.Item>Edit</Dropdown.Item>
                 </Link>
                 <Dropdown.Item onClick={deleteThisJob}>Delete</Dropdown.Item>
@@ -46,7 +48,7 @@ function JobDetail({ obj, onUpdate }) {
         </Grid>
         <Grid columns={2} divided>
           <Grid.Column as="h5">
-            <li>{obj.location}</li>
+            <li>{job.location}</li>
             <Divider />
             <li>{date}</li>
             <Divider />
@@ -54,15 +56,15 @@ function JobDetail({ obj, onUpdate }) {
           </Grid.Column>
           <Grid.Column className="job-crew-column">
             <Header as="h4">Crew
-              <Button hidden={obj.uid?.id !== user.id} onClick={() => setOpen(!open)} size="small">Add Crew</Button>
+              <Button hidden={job.uid?.id !== user.id} onClick={() => setOpen(!open)} size="small">Add Crew</Button>
             </Header>
             <List horizontal relaxed>
-              {obj.crew?.map((i) => (
+              {job.crew?.map((i) => (
                 <List.Item key={i.id}>
                   <Image avatar src={i.uid.image} />
                   <List.Content>
                     <List.Header>{i.uid.name}</List.Header>
-                    {i.skill.skill}{`-${i.accepted}`}
+                    {i.skill.skill}{`-${i.accepted ? 'Accepted' : i.accepted === false ? 'Declined' : 'Pending'}`}
                   </List.Content>
                 </List.Item>
               ))}
@@ -70,16 +72,16 @@ function JobDetail({ obj, onUpdate }) {
           </Grid.Column>
         </Grid>
         <Header as="h3">Job Details</Header>
-        <p>{obj.description}</p>
+        <p>{job.description}</p>
       </Segment>
-      <CrewModal jobId={obj.id} crew={obj.crew} open={open} setOpen={setOpen} onUpdate={onUpdate} />
+      <CrewModal jobId={job.id} cid={job.company?.id} crew={job.crew} open={open} setOpen={setOpen} onUpdate={onUpdate} />
     </>
   );
 }
 
 JobDetail.propTypes = {
   onUpdate: PropTypes.func.isRequired,
-  obj: PropTypes.shape({
+  job: PropTypes.shape({
     id: PropTypes.number,
     title: PropTypes.string,
     description: PropTypes.string,
@@ -88,6 +90,10 @@ JobDetail.propTypes = {
     address: PropTypes.string,
     lat: PropTypes.number,
     long: PropTypes.number,
+    company: PropTypes.shape({
+      name: PropTypes.string,
+      id: PropTypes.number,
+    }),
     category: PropTypes.shape({
       id: PropTypes.number,
       skill: PropTypes.string,

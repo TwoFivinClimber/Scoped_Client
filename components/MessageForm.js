@@ -34,9 +34,9 @@ function MessageForm({
   };
 
   return (
-    <Form onSubmit={handleSubmit} reply>
+    <Form onSubmit={handleSubmit} hidden={!(jobInvite?.accepted || authId === user.id)}>
       <Header as="h6">Add a Message</Header>
-      <Form.TextArea hidden={!(jobInvite?.accepted || authId === user.id)} value={input} onChange={handleChange} onKeyDown={handleKeyDown} />
+      <Form.TextArea value={input} onChange={handleChange} onKeyDown={handleKeyDown} />
       <Button hidden={input === ''} type="submit" content="Add Reply" />
     </Form>
   );

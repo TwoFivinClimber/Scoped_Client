@@ -40,7 +40,7 @@ function LogoModal({
     if (logo) {
       setImage(logo);
     }
-  }, [logo]);
+  }, [logo, open]);
 
   return (
     <Modal
@@ -54,7 +54,7 @@ function LogoModal({
           <Image className="logo-modal-image" centered circular size="medium" src={isObject ? URL.createObjectURL(image) : image} />
           <Form.Input type="file" onChange={handleChange} label="Upload Your NewLogo" />
           <Form.Group className="crew-modal-buttons" widths="equal">
-            <Button type="submit" positive>
+            <Button onClick={() => closeFunction()} type="button" positive>
               Save
             </Button>
             <Button type="button" color="black" onClick={() => closeFunction()}>

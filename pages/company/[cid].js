@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import Blog from '../../components/Blog';
 import CompanyDetail from '../../components/CompanyDetail';
+import { useAuth } from '../../utils/context/authContext';
 import { getCompanyBlog } from '../../utils/data/blog';
 import { getCompany } from '../../utils/data/company';
 
@@ -10,20 +11,23 @@ function CompanyPage() {
   const { cid } = router.query;
   const [company, setCompany] = useState({});
   const [blogs, setBlogs] = useState([]);
+  const { user } = useAuth();
 
   const getTheContent = () => {
-    getCompany(cid).then(setCompany);
+    getCompany(cid, user.id).then(setCompany);
     getCompanyBlog(cid).then(setBlogs);
   };
 
   useEffect(() => {
-    getTheContent();
-  }, [router, cid]);
+    if (user) {
+      getTheContent();
+    }
+  }, [user, router, cid]);
 
   return (
     <>
-      <CompanyDetail admin={false} obj={company} onUpdate={getTheContent} />
-      <Blog cid={company.id} blogs={blogs} onUpdate={getTheContent} />
+      <CompanyDetail employees={company.employees} company={company} onUpdate={getTheContent} />
+      <Blog cid={company.id} pending={company.invited} blogs={blogs} onUpdate={getTheContent} />
     </>
   );
 }

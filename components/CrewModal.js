@@ -8,10 +8,11 @@ import Select from 'react-select';
 import {
   getCrewForJob, createCrew, updateCrew, deleteCrew,
 } from '../utils/data/user';
+import { reSendJob } from '../utils/data/invites';
 import { getUserSkills } from '../utils/data/skills';
 
 function CrewModal({
-  jobId, open, setOpen, crew, onUpdate,
+  jobId, open, setOpen, crew, onUpdate, cid,
 }) {
   const [key, setKey] = useState([]);
   const [selected, setSelected] = useState({});
@@ -31,7 +32,6 @@ function CrewModal({
   const setEdit = (user) => {
     getUserSkills(user.uid.id).then((skills) => {
       const member = { value: user.uid.id, label: user.uid.name };
-      console.warn(user);
       setSelected({
         id: user.id,
         value: user.uid.id,
@@ -48,7 +48,7 @@ function CrewModal({
   };
 
   const getAvailableCrew = () => new Promise((resolve) => {
-    getCrewForJob(jobId).then((response) => {
+    getCrewForJob(jobId, cid).then((response) => {
       resolve(response);
     });
   });
@@ -107,6 +107,12 @@ function CrewModal({
     refreshCrewOptions();
   };
 
+  const reSendInvite = (id) => {
+    reSendJob(id).then(() => {
+      onUpdate();
+    });
+  };
+
   useEffect(() => {
     refreshCrewOptions();
   }, []);
@@ -163,8 +169,10 @@ function CrewModal({
                 {i.skill.skill}
                 <Comment.Actions>
                   <Comment.Action onClick={() => setEdit(i)}>Edit</Comment.Action>
-                  <span>-</span>
+                  <span> | </span>
                   <Comment.Action onClick={() => handleDelete(i)}>Remove</Comment.Action>
+                  <span> | </span>
+                  <Comment.Action hidden={!(i.accepted === false)} onClick={() => reSendInvite(i.id)}>Re-Send</Comment.Action>
                 </Comment.Actions>
               </List.Content>
             </List.Item>
@@ -180,6 +188,7 @@ CrewModal.propTypes = {
   open: PropTypes.bool.isRequired,
   setOpen: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired,
+  cid: PropTypes.number.isRequired,
   crew: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,

@@ -1,29 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Item, List, Form, Button,
+  Item, List, Form, Button, Confirm,
 } from 'semantic-ui-react';
 import Select from 'react-select';
 import { createUserSkills } from '../utils/data/skills';
+import { deleteEmployee } from '../utils/data/employee';
 
 function EmployeeDetail({
-  employee, companySkills, cid, onUpdate,
+  employee, companySkills, cid, onUpdate, ownerId,
 }) {
   const [edit, setEdit] = useState(false);
   const [skills, setSkills] = useState([]);
+  const [confirm, setConfirm] = useState(false);
 
   const handleSelect = (e) => {
     setSkills(e);
   };
   const handleSubmit = () => {
     const payload = {
-      uid: employee.id,
+      uid: employee.user.id,
       cid,
       skills: skills.map((i) => i.id),
     };
     createUserSkills(payload).then(() => {
       onUpdate();
       setEdit(!edit);
+    });
+  };
+
+  const handleDelete = () => {
+    deleteEmployee(employee.id).then(() => {
+      onUpdate();
     });
   };
 
@@ -42,7 +50,7 @@ function EmployeeDetail({
   }, [employee]);
 
   return (
-    <Item>
+    <Item hidden={employee.user.id === ownerId}>
       <Item.Image size="small" src={employee.user?.image} />
       <Item.Content>
         <Item.Header as="a">{employee.user.name}</Item.Header>
@@ -76,8 +84,17 @@ function EmployeeDetail({
       </Item.Content>
       <Item.Group hidden={edit}>
         <Button positive onClick={() => setEdit(!edit)}>Edit</Button>
-        <Button negative>Delete</Button>
+        <Button negative onClick={() => setConfirm(!confirm)}>Delete</Button>
       </Item.Group>
+      <Confirm
+        className="crew-modal"
+        open={confirm}
+        cancelButton="Never mind"
+        confirmButton="Delete It"
+        content={`Are you sure you want to let ${employee.user?.name} go ? `}
+        onCancel={() => setConfirm(!confirm)}
+        onConfirm={() => handleDelete()}
+      />
     </Item>
   );
 }
@@ -85,6 +102,7 @@ function EmployeeDetail({
 EmployeeDetail.propTypes = {
   onUpdate: PropTypes.func.isRequired,
   cid: PropTypes.number.isRequired,
+  ownerId: PropTypes.number.isRequired,
   employee: PropTypes.shape({
     id: PropTypes.number,
     creation: PropTypes.string,

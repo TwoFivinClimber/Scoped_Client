@@ -2,19 +2,31 @@ import React from 'react';
 import { Card, Button } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
+import { acceptCompanyInvite, declineCompanyInvite } from '../utils/data/invites';
+import { useInvite } from '../utils/context/navContext';
+import { useAuth } from '../utils/context/authContext';
 
 function CompanyInvite({ obj }) {
   const router = useRouter();
+  const { updateInvites } = useInvite();
+  const { user, updateUser } = useAuth();
 
   const acceptOffer = () => {
     if (window.confirm('Good to Go')) {
-      console.warn('yes');
+      acceptCompanyInvite(obj.id).then(() => {
+        updateInvites();
+        updateUser(user.firebase);
+        router.push('/');
+      });
     }
   };
 
   const declineOffer = () => {
     if (window.confirm('Decline Offer ?')) {
-      console.warn('no');
+      declineCompanyInvite(obj.id).then(() => {
+        updateInvites();
+        router.push('/');
+      });
     }
   };
 
@@ -42,8 +54,8 @@ function CompanyInvite({ obj }) {
 }
 
 CompanyInvite.propTypes = {
-  id: PropTypes.number.isRequired,
   obj: PropTypes.shape({
+    id: PropTypes.shape,
     company: PropTypes.shape({
       id: PropTypes.number.isRequired,
       name: PropTypes.string,

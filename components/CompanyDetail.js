@@ -5,22 +5,22 @@ import {
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useAuth } from '../utils/context/authContext';
 import { deleteCompany } from '../utils/data/company';
 import LogoModal from './LogoModal';
 import EmployeeManager from './EmployeeManager';
+import { useInvite } from '../utils/context/navContext';
 
-function CompanyDetail({
-  admin, obj, employees, onUpdate,
-}) {
-  const { user } = useAuth();
+function CompanyDetail({ company, employees, onUpdate }) {
   const [confirm, setConfirm] = useState(false);
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [abri, setAbri] = useState(false);
+  const admin = (router.pathname.split('/')[2] === 'admin');
+  const { updateInvites } = useInvite();
 
   const handleDelete = () => {
-    deleteCompany(obj.id);
+    deleteCompany(company.id);
+    updateInvites();
     router.push('/');
   };
 
@@ -29,25 +29,25 @@ function CompanyDetail({
       <Segment>
         <Grid columns={2}>
           <Grid.Column>
-            <Header as="h1">{obj?.name}</Header>
+            <Header as="h1">{company?.name}</Header>
           </Grid.Column>
           <Grid.Column textAlign="right">
             <Dropdown
               className="link item"
               icon="ellipsis horizontal"
-              hidden={obj.owner?.id !== user.id}
+              hidden={!company.admin}
             >
               <Dropdown.Menu>
-                <Link passHref href={`/company/admin/${obj.id}`}>
+                <Link passHref href={`/company/admin/${company.id}`}>
                   <Dropdown.Item hidden={admin}>Admin</Dropdown.Item>
                 </Link>
-                <Link passHref href={`/company/edit/${obj.id}`}>
+                <Link passHref href={`/company/edit/${company.id}`}>
                   <Dropdown.Item hidden={!admin}>Edit Info</Dropdown.Item>
                 </Link>
-                <Link passHref href={`/company/admin/invites/${obj.id}`}>
+                <Link passHref href={`/company/admin/invites/${company.id}`}>
                   <Dropdown.Item hidden={!admin}>Invites</Dropdown.Item>
                 </Link>
-                <Dropdown.Item onClick={() => setConfirm(!confirm)} hidden={!admin}>Delete Company</Dropdown.Item>
+                {admin ? (<Dropdown.Item onClick={() => setConfirm(!confirm)} hidden={!company.isowner}>Delete Company</Dropdown.Item>) : (' ') }
               </Dropdown.Menu>
             </Dropdown>
             <Confirm
@@ -62,28 +62,28 @@ function CompanyDetail({
         </Grid>
         <Grid columns={3} divided>
           <Grid.Column as="h5">
-            <li>{obj.type}</li>
+            <li>{company.type}</li>
             <Divider />
-            <li>{obj.location}</li>
+            <li>{company.location}</li>
             <Divider />
-            <li>Scoped Since: {obj.creation}</li>
+            <li>Scoped Since: {company.creation}</li>
             <Divider />
-            <li>Owner: {obj.owner?.name}</li>
+            <li>Owner: {company.owner?.name}</li>
             <Divider />
             <li>707-621-1665</li>
             <Divider />
-            <li>{obj.owner?.email}</li>
+            <li>{company.owner?.email}</li>
           </Grid.Column>
           <Grid.Column>
-            <Image centered size="medium" src={obj.logo} />
+            <Image centered size="medium" src={company.logo} />
             <Button centered hidden={!admin} onClick={() => setOpen(!open)}>Upload Logo</Button>
           </Grid.Column>
           <Grid.Column className="job-crew-column">
             <Header as="h4">Employees
             </Header>
             <List horizontal relaxed>
-              {obj.employees?.map((i) => (
-                <List.Item key={i.id}>
+              {company.employees?.map((i) => (
+                <List.Item hidden={i.user.id === company.owner?.id} key={i.id}>
                   <Image avatar src={i.user.image} />
                   <List.Content>
                     <List.Header>{i.user.name}</List.Header>
@@ -95,24 +95,27 @@ function CompanyDetail({
           </Grid.Column>
         </Grid>
         <Header as="h3">About</Header>
-        <p>{obj.description}</p>
+        <p>{company.description}</p>
       </Segment>
-      <LogoModal open={open} setOpen={setOpen} logo={obj.logo} cid={obj.id} onUpdate={onUpdate} />
-      <EmployeeManager employees={employees} companySkills={obj.skills} cid={obj.id} abri={abri} setAbri={setAbri} onUpdate={onUpdate} />
+      <LogoModal open={open} setOpen={setOpen} logo={company.logo} cid={company.id} onUpdate={onUpdate} />
+      <EmployeeManager employees={employees} companySkills={company.skills} ownerId={company.owner?.id} cid={company.id} abri={abri} setAbri={setAbri} onUpdate={onUpdate} />
     </>
   );
 }
 
 CompanyDetail.propTypes = {
-  admin: PropTypes.bool.isRequired,
   onUpdate: PropTypes.func.isRequired,
   employees: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
+      admin: PropTypes.bool,
     }),
   ).isRequired,
-  obj: PropTypes.shape({
+  company: PropTypes.shape({
     id: PropTypes.number,
+    admin: PropTypes.bool,
+    isowner: PropTypes.bool,
+    invited: PropTypes.bool,
     owner: PropTypes.shape({
       id: PropTypes.number,
       name: PropTypes.string,

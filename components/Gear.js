@@ -5,7 +5,7 @@ import GearModal from './GearModal';
 import { useAuth } from '../utils/context/authContext';
 
 function Gear({
-  authId, jobId, gearArr, onUpdate,
+  authId, jobId, gearArr, onUpdate, cid,
 }) {
   const [abri, setAbri] = useState(false);
   const { user } = useAuth();
@@ -21,7 +21,7 @@ function Gear({
           ))}
         </div>
       </Segment>
-      <GearModal gearArr={gearArr} abri={abri} setAbri={setAbri} jobId={jobId} onUpdate={onUpdate} />
+      <GearModal gearArr={gearArr} abri={abri} cid={cid} setAbri={setAbri} jobId={jobId} onUpdate={onUpdate} />
     </>
   );
 }
@@ -37,6 +37,7 @@ Gear.propTypes = {
   jobId: PropTypes.number,
   authId: PropTypes.number,
   onUpdate: PropTypes.func.isRequired,
+  cid: PropTypes.number.isRequired,
 };
 
 Gear.defaultProps = {

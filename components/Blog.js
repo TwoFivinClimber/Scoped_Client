@@ -6,7 +6,9 @@ import PropTypes from 'prop-types';
 import BlogModal from './BlogModal';
 import { deleteBlogPost } from '../utils/data/blog';
 
-function Blog({ blogs, cid, onUpdate }) {
+function Blog({
+  blogs, cid, onUpdate, pending,
+}) {
   const [open, setOpen] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const [edit, setEdit] = useState({});
@@ -27,7 +29,7 @@ function Blog({ blogs, cid, onUpdate }) {
     <>
       <Segment>
         <Header as="h2">Message Board
-          <Button floated="right" basic color="black" onClick={() => setOpen(!open)}>
+          <Button floated="right" hidden={pending} basic color="black" onClick={() => setOpen(!open)}>
             <Icon color="orange" name="add" />
             Add A Post
           </Button>
@@ -74,6 +76,7 @@ function Blog({ blogs, cid, onUpdate }) {
 Blog.propTypes = {
   cid: PropTypes.number.isRequired,
   onUpdate: PropTypes.func.isRequired,
+  pending: PropTypes.bool.isRequired,
   blogs: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,

@@ -14,8 +14,8 @@ NavContext.displayName = 'NavContext';
 
 const InviteProvider = (props) => {
   const { user } = useAuth();
-  const [invites, setInvites] = useState(null);
-  const [compInvites, setCompInvites] = useState(null);
+  const [invites, setInvites] = useState([]);
+  const [compInvites, setCompInvites] = useState([]);
 
   const updateInvites = useMemo(
     () => () => getInvitesByUser(user?.id).then((data) => {

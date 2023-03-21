@@ -2,8 +2,8 @@ import { clientCredentials } from '../client';
 
 const dbUrl = clientCredentials.databaseURL;
 
-const getSkills = () => new Promise((resolve, reject) => {
-  fetch(`${dbUrl}/skills`)
+const getSkills = (cid) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/skills?cid=${cid}`)
     .then((response) => resolve(response.json()))
     .catch(reject);
 });

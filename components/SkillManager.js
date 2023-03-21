@@ -40,11 +40,11 @@ function SkillManager({ companySkills, cid, onUpdate }) {
   return (
     <>
       <Segment className="job-equipment-segment">
-        <Header as="h3">Company Gear
+        <Header as="h3">Company Skills
           <Container>
             <Form onSubmit={handleSubmit} className="admin-gear-form">
               <Form.Field>
-                <Form.Input label="Add Gear" value={input} onChange={handleChange} placeholder="Enter Item Name" />
+                <Form.Input label="Add Skills" value={input} onChange={handleChange} placeholder="Enter Item Name" />
                 <Button type="submit">Submit</Button>
               </Form.Field>
             </Form>

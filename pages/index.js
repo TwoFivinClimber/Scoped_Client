@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { Header, Segment } from 'semantic-ui-react';
 import JobCard from '../components/JobCard';
@@ -8,6 +9,7 @@ function Home() {
   const [jobs, setJobs] = useState([]);
   const { user } = useAuth();
   const userCreatedJobs = user.jobs;
+  const router = useRouter();
 
   const getTheContent = () => {
     getJobsByCrew(user.id).then(setJobs);
@@ -15,7 +17,7 @@ function Home() {
 
   useEffect(() => {
     getTheContent();
-  }, [user]);
+  }, [user, router]);
 
   return (
     <>

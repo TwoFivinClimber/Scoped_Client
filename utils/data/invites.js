@@ -25,7 +25,9 @@ const declineJob = (id) => new Promise((resolve, reject) => {
 });
 
 const reSendJob = (id) => new Promise((resolve, reject) => {
-  fetch(`${dbUrl}/crews/${id}/re_send`)
+  fetch(`${dbUrl}/crews/${id}/re_send`, {
+    method: 'PUT',
+  })
     .then((response) => resolve(response.json()))
     .catch(reject);
 });
@@ -62,6 +64,22 @@ const deleteInvite = (id) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+const acceptCompanyInvite = (id) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/invites/${id}/employ`, {
+    method: 'POST',
+  })
+    .then(resolve)
+    .catch(reject);
+});
+
+const declineCompanyInvite = (id) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/invites/${id}/deny`, {
+    method: 'DELETE',
+  })
+    .then(resolve)
+    .catch(reject);
+});
+
 export {
-  getInvitesByUser, acceptJob, declineJob, reSendJob, createInvite, deleteInvite, getInvitesByCompany, getCmpInvitesByUser,
+  getInvitesByUser, acceptJob, declineJob, reSendJob, createInvite, deleteInvite, getInvitesByCompany, getCmpInvitesByUser, acceptCompanyInvite, declineCompanyInvite,
 };

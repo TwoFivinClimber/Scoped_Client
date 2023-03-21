@@ -1,12 +1,12 @@
 import React from 'react';
 import {
-  Modal, Segment, Item,
+  Modal, Segment, Item, Button,
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import EmployeeDetail from './EmployeeDetail';
 
 function EmployeeManager({
-  employees, cid, abri, setAbri, onUpdate, companySkills,
+  employees, cid, abri, setAbri, onUpdate, companySkills, ownerId,
 }) {
   return (
     <Modal
@@ -19,10 +19,13 @@ function EmployeeManager({
       <Segment>
         <Item.Group relaxed>
           {employees?.map((i) => (
-            <EmployeeDetail key={i.id} employee={i} cid={cid} onUpdate={onUpdate} companySkills={companySkills} />
+            <EmployeeDetail key={i.id} employee={i} cid={cid} ownerId={ownerId} onUpdate={onUpdate} companySkills={companySkills} />
           ))}
         </Item.Group>
       </Segment>
+      <Modal.Actions>
+        <Button onClick={() => setAbri(!abri)} color="black">Done</Button>
+      </Modal.Actions>
     </Modal>
   );
 }
@@ -31,6 +34,7 @@ EmployeeManager.propTypes = {
   abri: PropTypes.bool.isRequired,
   setAbri: PropTypes.func.isRequired,
   cid: PropTypes.number.isRequired,
+  ownerId: PropTypes.number.isRequired,
   onUpdate: PropTypes.func.isRequired,
   companySkills: PropTypes.arrayOf(
     PropTypes.shape({

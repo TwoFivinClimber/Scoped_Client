@@ -7,13 +7,17 @@ import AsyncSelect from 'react-select/async';
 import { getGear, updateJobGear } from '../utils/data/gear';
 
 function GearModal({
-  gearArr, abri, setAbri, jobId, onUpdate,
+  gearArr, abri, setAbri, jobId, onUpdate, cid,
 }) {
   const [gear, setGear] = useState([]);
 
   const handleSelect = (e) => {
     setGear(e);
   };
+
+  const getCompanyGear = () => new Promise((resolve, reject) => {
+    getGear(cid).then(resolve).catch(reject);
+  });
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -55,7 +59,7 @@ function GearModal({
               defaultOptions
               value={gear}
               onChange={handleSelect}
-              loadOptions={getGear}
+              loadOptions={getCompanyGear}
             />
           </Form.Field>
           <Form.Group className="crew-modal-buttons" widths="equal">
@@ -77,6 +81,7 @@ GearModal.propTypes = {
   setAbri: PropTypes.func.isRequired,
   jobId: PropTypes.number,
   onUpdate: PropTypes.func.isRequired,
+  cid: PropTypes.number.isRequired,
   gearArr: PropTypes.arrayOf(
     PropTypes.shape({
       gear: PropTypes.shape({

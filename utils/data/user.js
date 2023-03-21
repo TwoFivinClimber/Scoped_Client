@@ -32,8 +32,8 @@ const deleteUser = (id) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const getCrewForJob = (id) => new Promise((resolve, reject) => {
-  fetch(`${dbUrl}/users?job=${id}`)
+const getCrewForJob = (id, cid) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/users?job=${id}&cid=${cid}`)
     .then((response) => resolve(response.json()))
     .catch(reject);
 });

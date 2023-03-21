@@ -109,6 +109,9 @@ body {
   flex-wrap: wrap;
   justify-content: space-around;
 }
+.job-form-company{
+  align-items: center;
+}
 
 /*Crew Modal*/
 .crew-modal{

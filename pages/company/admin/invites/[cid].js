@@ -5,16 +5,18 @@ import InviteManager from '../../../../components/InviteManager';
 import { getAvailableUsers } from '../../../../utils/data/user';
 import { getCompany } from '../../../../utils/data/company';
 import UserInviteCard from '../../../../components/UserInviteCard';
+import { useAuth } from '../../../../utils/context/authContext';
 
 function Invites() {
   const router = useRouter();
   const { cid } = router.query;
   const [available, setAvailable] = useState([]);
   const [company, setCompany] = useState({});
+  const { user } = useAuth();
 
   const getTheContent = () => {
     getAvailableUsers(cid).then(setAvailable);
-    getCompany(cid).then(setCompany);
+    getCompany(cid, user.id).then(setCompany);
   };
 
   useEffect(() => {

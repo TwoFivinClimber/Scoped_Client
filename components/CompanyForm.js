@@ -21,7 +21,7 @@ const initialState = {
 };
 function CompanyForm({ obj }) {
   const [input, setInput] = useState(initialState);
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -37,7 +37,6 @@ function CompanyForm({ obj }) {
       getLocationDetails(target.value).then((response) => {
         const location = response.formatted_address;
         const string = `${location.split(',')[0]},${location.split(',')[1]}`;
-        console.warn(response, string);
         setInput((prev) => ({
           ...prev,
           location: string,
@@ -59,7 +58,9 @@ function CompanyForm({ obj }) {
         uid: user.id,
       };
       createCompany(cmpObj).then((response) => {
-        router.push(`/company/${response.id}`);
+        updateUser(user.firebase).then(() => {
+          router.push(`/company/${response.id}`);
+        });
       });
     }
   };
