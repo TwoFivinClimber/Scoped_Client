@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react';
 import {
-  Header, Grid, Image, Divider, Segment, List, Button, Dropdown,
+  Header, Grid, Image, Divider, Segment, List, Button, Dropdown, Confirm,
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
@@ -9,18 +9,22 @@ import { useRouter } from 'next/router';
 import CrewModal from './CrewModal';
 import { useAuth } from '../utils/context/authContext';
 import { deleteJob } from '../utils/data/job';
+import { useInvite } from '../utils/context/navContext';
 
 function JobDetail({ job, onUpdate }) {
-  const date = job.datetime?.split('T')[0];
-  const time = job.datetime?.split('T')[1].split('Z')[0];
   const [open, setOpen] = useState(false);
-  const { user } = useAuth();
+  const [confirm, setConfirm] = useState(false);
+  const { user, updateUser } = useAuth();
+  const { updateInvites } = useInvite();
   const router = useRouter();
 
   const deleteThisJob = () => {
-    if (window.confirm('Are you sure you want to delete this job?')) {
-      deleteJob(job.id).then(() => router.push('/'));
-    }
+    deleteJob(job.id).then(() => {
+      updateInvites().then(() => {
+        updateUser(user.firebase);
+        router.push('/');
+      });
+    });
   };
 
   return (
@@ -41,7 +45,7 @@ function JobDetail({ job, onUpdate }) {
                 <Link passHref href={`/job/edit/${job.id}`}>
                   <Dropdown.Item>Edit</Dropdown.Item>
                 </Link>
-                <Dropdown.Item onClick={deleteThisJob}>Delete</Dropdown.Item>
+                <Dropdown.Item onClick={() => setConfirm(!confirm)}>Delete</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </Grid.Column>
@@ -50,9 +54,7 @@ function JobDetail({ job, onUpdate }) {
           <Grid.Column as="h5">
             <li>{job.location}</li>
             <Divider />
-            <li>{date}</li>
-            <Divider />
-            <li>{time}</li>
+            <li>{job.datetime}</li>
           </Grid.Column>
           <Grid.Column className="job-crew-column">
             <Header as="h4">Crew
@@ -75,6 +77,13 @@ function JobDetail({ job, onUpdate }) {
         <p>{job.description}</p>
       </Segment>
       <CrewModal jobId={job.id} cid={job.company?.id} crew={job.crew} open={open} setOpen={setOpen} onUpdate={onUpdate} />
+      <Confirm
+        className="crew-modal"
+        open={confirm}
+        content="Delete this job ?"
+        onCancel={() => setConfirm(!confirm)}
+        onConfirm={() => deleteThisJob()}
+      />
     </>
   );
 }

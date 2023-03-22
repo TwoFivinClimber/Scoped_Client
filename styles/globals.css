@@ -23,6 +23,26 @@ body {
   background-color: #e5e5e5;
 }
 
+/* Sign In */
+
+.landing-container{
+  height: 100vh;
+  background-color: black;
+}
+
+.sign-in-button-div{
+  display: flex;
+  justify-content: center;
+}
+
+.sign-in-button{
+  width: 12rem;
+}
+
+.scoped-image{
+  padding-top: 5rem;
+}
+
 /* NAV */
 
 .scoped-nav{
