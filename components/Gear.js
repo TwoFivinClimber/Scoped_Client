@@ -13,7 +13,7 @@ function Gear({
     <>
       <Segment className="job-equipment-segment">
         <Header as="h3">Gear
-          <Button hidden={authId !== user.id} onClick={() => setAbri(!abri)} size="small">Add Gear</Button>
+          <Button floated="right" hidden={authId !== user.id} onClick={() => setAbri(!abri)} size="small">Modify Gear</Button>
         </Header>
         <div className="job-equipment-div">
           {gearArr?.map((i) => (

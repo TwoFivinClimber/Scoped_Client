@@ -144,10 +144,12 @@ function JobForm({ obj }) {
     if (obj.id) {
       setInput({
         ...obj,
-        time: `${obj.datetime?.split('-')[1]}:00`,
-        date: obj.datetime?.split('-')[0],
+        time: `${obj.datetime?.split('-')[1]}`,
+        date: new Date(obj.datetime?.split('-')[0]).toISOString().slice(0, 10),
         category: { value: obj.category.id, label: obj.category.skill },
         company: { company: obj.company },
+        displayLocation: obj.location,
+        cid: obj.company.id,
       });
     }
   }, [obj]);
@@ -219,7 +221,7 @@ function JobForm({ obj }) {
             <Button type="submit" positive>Submit</Button>
           </div>
           <div>
-            <Button onClick={() => router.push('/')} type="button" negative>Cancel</Button>
+            <Button onClick={() => router.back()} type="button" negative>Cancel</Button>
           </div>
         </Form.Group>
       </Form>

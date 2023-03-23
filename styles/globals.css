@@ -59,6 +59,15 @@ body {
   color: black!important;
 }
 
+.company-drop-items{
+  display: flex!important;
+}
+
+.company-drop-items .text {
+  font-weight: bold;
+}
+
+
 /* Job Detail */
 .job-crew-column{
   display: flex!important;
@@ -89,12 +98,23 @@ body {
 .job-images-div{
   display: flex;
   flex-direction: wrap;
+  justify-content: space-evenly;
 }
 
 .job-image{
   height: 180px!important;
   width: 240px!important;
   object-fit: cover;
+}
+
+/*Job Detail Image Modal */
+.image-view-modal-description{
+  display:flex!important;
+  align-items: center;
+}
+.modal-images img{
+  border-radius: 5%;
+  max-height: 500px;
 }
 /*Modal Center */
 .dimmed.dimmable > .ui.animating.dimmer, .dimmed.dimmable > .ui.visible.dimmer, .ui.active.dimmer {
@@ -116,18 +136,11 @@ body {
 .job-form-buttons{
   justify-content: space-around;
 }
-.job-form-image{
-  height: 200px;
-  width: 200px;
-  object-fit: cover;
+.job-form-images{
+  align-items: center
 }
-.job-form-image-item{
-  width: 40%!important;
-}
-.job-form-image-item-div{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+.edit-image-description{
+  width: 100%;
 }
 .job-form-company{
   align-items: center;

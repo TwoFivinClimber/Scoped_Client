@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
-  React,
+  React, useState,
 } from 'react';
 import {
   Menu, Button, Icon, Image, Dropdown,
@@ -14,6 +14,7 @@ import { useInvite } from '../utils/context/navContext';
 export default function NavBar() {
   const { user } = useAuth();
   const { invites, compInvites } = useInvite();
+  const [active, setActive] = useState('');
   const router = useRouter();
   // const invitations = invites.concat(compInvites);
 
@@ -22,37 +23,51 @@ export default function NavBar() {
     signOut();
   };
 
+  const handleClick = (e) => {
+    const { id } = e.target;
+    setActive(id);
+  };
+
   return (
 
-    <Menu className="menu-container" borderless inverted stackable>
+    <Menu className="menu-container" size="large" pointing borderless inverted stackable>
       <Link passHref href="/">
         <Menu.Item
-          content="Home"
+          id="home"
+          onClick={handleClick}
+          inline
+          active={active === 'home'}
+          content="Jobs"
         />
       </Link>
       <Link passHref href="/invites">
-        <Menu.Item>
+        <Menu.Item
+          id="invites"
+          inline
+          active={active === 'invites'}
+          onClick={handleClick}
+        >
           Invites
           <Icon hidden={!(invites?.length || compInvites?.length)} name="bell" size="large" color="yellow" inverted />
         </Menu.Item>
       </Link>
-      <Menu.Item>
-        <Dropdown
-          text="Companies"
-          pointing
-        >
-          <Dropdown.Menu className="company-dropdown">
-            {user.companies?.map((cmp) => (
-              <Link key={cmp.id} passHref href={`/company/${cmp.company.id}`}>
-                <Dropdown.Item
-                  image={cmp.company.logo}
-                  content={cmp.company.name}
-                />
-              </Link>
-            ))}
-          </Dropdown.Menu>
-        </Dropdown>
-      </Menu.Item>
+      <Dropdown
+        item
+        text="Companies"
+        pointing
+      >
+        <Dropdown.Menu>
+          {user.companies?.map((cmp) => (
+            <Link key={cmp.id} passHref href={`/company/${cmp.company.id}`}>
+              <Dropdown.Item
+                className="company-drop-items"
+                icon={{ as: 'img', avatar: true, src: cmp.company.logo }}
+                content={cmp.company.name}
+              />
+            </Link>
+          ))}
+        </Dropdown.Menu>
+      </Dropdown>
       <Menu.Item
         className="scoped-nav"
         content="Scoped"
@@ -65,15 +80,28 @@ export default function NavBar() {
           pointing
           className="link item"
         >
-          <Dropdown.Menu>
+          <Dropdown.Menu
+            id="profile"
+            onClick={handleClick}
+            active={active === 'profile'}
+          >
             <Link passHref href="/profile">
-              <Dropdown.Item>Profile</Dropdown.Item>
+              <Dropdown.Item
+                icon="user"
+                content="Profile"
+              />
             </Link>
             <Link passHref href="/job/new">
-              <Dropdown.Item>Create Job</Dropdown.Item>
+              <Dropdown.Item
+                content="Create Job"
+                icon="write"
+              />
             </Link>
             <Link passHref href="/company/new">
-              <Dropdown.Item>Create Company</Dropdown.Item>
+              <Dropdown.Item
+                content="Creare Company"
+                icon="bullhorn"
+              />
             </Link>
           </Dropdown.Menu>
         </Dropdown>

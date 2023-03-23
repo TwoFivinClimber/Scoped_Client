@@ -54,6 +54,8 @@ function JobDetail({ job, onUpdate }) {
           <Grid.Column as="h5">
             <li>{job.location}</li>
             <Divider />
+            <li>{job.address}</li>
+            <Divider />
             <li>{job.datetime}</li>
           </Grid.Column>
           <Grid.Column className="job-crew-column">

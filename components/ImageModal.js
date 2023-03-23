@@ -12,11 +12,10 @@ function ImageModal({ open, setOpen, images }) {
       onOpen={() => setOpen(true)}
     >
       <Modal.Header>Image Detail</Modal.Header>
-
       {images?.map((i) => (
         <Modal.Content key={i.id} image>
           <Image className="modal-images" src={i.image} wrapped />
-          <Modal.Description>
+          <Modal.Description className="image-view-modal-description">
             <p>{i.description}</p>
           </Modal.Description>
         </Modal.Content>

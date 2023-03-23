@@ -31,17 +31,18 @@ function Images({
     <>
       <Segment className="job-image-segment">
         <Header as="h3">Photos
-          <Button hidden={authId !== user.id} onClick={() => setAbri(!abri)}>Add Photos</Button>
+          <Button as="dropdown" floated="right" size="small" hidden={authId !== user.id} onClick={() => setAbri(!abri)}>Add Photos</Button>
         </Header>
         <div className="job-images-div">
           {imageArr?.map((i) => (
             <Item key={i.id}>
               <Image onClick={() => setOpen(!open)} key={i.id} size="small" bordered centered rounded className="job-image" src={i.image} />
-              <Item.Extra hidden={authId !== user.id} onClick={() => deleteThisImage(i.id)} as="button">
-                Delete
-              </Item.Extra>
-              <Item.Extra hidden={authId !== user.id} onClick={() => handleEdit(imageArr.indexOf(i))} as="button">
-                Edit
+              <Item.Extra>
+                <Button.Group size="mini" compact>
+                  <Button size="mini" inverted color="green" content="Edit" hidden={authId !== user.id} onClick={() => handleEdit(imageArr.indexOf(i))} />
+                  <Button.Or text="or" />
+                  <Button size="mini" inverted color="red" content="Delete" hidden={authId !== user.id} onClick={() => deleteThisImage(i.id)} />
+                </Button.Group>
               </Item.Extra>
             </Item>
           ))}
