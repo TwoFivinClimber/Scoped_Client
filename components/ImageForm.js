@@ -16,8 +16,15 @@ function ImageForm({
     setAbri(!abri);
   };
 
-  const handleImage = (e) => {
+  const handleImage = async (e) => {
     const fileArr = [...e.target.files];
+    // const filterFiles = fileArr.map((file) => {
+    //   if (file.type === 'image/heic') {
+    //     const blob = convertHeic(file);
+    //     const converted = new File([blob], 'converted.jpeg', { type: 'image/jpeg' });
+    //     return converted;
+    //   }
+    // });
     const formatted = fileArr.map((file) => ({
       image: file,
       description: '',

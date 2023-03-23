@@ -22,7 +22,7 @@ function Home() {
   return (
     <>
       <Segment hidden={!userCreatedJobs.length}>
-        <Header as="h3">My Created Jobs</Header>
+        <Header as="h3">My Jobs</Header>
         {userCreatedJobs?.map((job) => (
           <JobCard key={`${job.id}author`} obj={job} />
         ))}
