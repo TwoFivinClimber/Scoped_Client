@@ -29,9 +29,10 @@ function UserCard({ obj }) {
         <Grid.Column width={4}>
           <Image src={obj.image} />
         </Grid.Column>
-        <Grid.Column textAlign="center" width={12}>
+        <Grid.Column textAlign="center" width={11}>
           <div>
             <Header as="h1">{obj.name}</Header>
+            <Header as="h6">{obj.email} | {obj.phone}</Header>
             <Dropdown
               className="link item"
               icon="ellipsis horizontal"
@@ -54,6 +55,7 @@ function UserCard({ obj }) {
             ))}
           </List>
         </Grid.Column>
+        {/* Grid FOr right side goes here */}
       </Grid.Row>
     </Grid>
   );
@@ -63,6 +65,8 @@ UserCard.propTypes = {
   obj: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
+    phone: PropTypes.string,
+    email: PropTypes.string,
     bio: PropTypes.string,
     image: PropTypes.string,
     skills: PropTypes.arrayOf(

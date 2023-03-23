@@ -16,8 +16,15 @@ function ImageForm({
     setAbri(!abri);
   };
 
-  const handleImage = (e) => {
+  const handleImage = async (e) => {
     const fileArr = [...e.target.files];
+    // const filterFiles = fileArr.map((file) => {
+    //   if (file.type === 'image/heic') {
+    //     const blob = convertHeic(file);
+    //     const converted = new File([blob], 'converted.jpeg', { type: 'image/jpeg' });
+    //     return converted;
+    //   }
+    // });
     const formatted = fileArr.map((file) => ({
       image: file,
       description: '',
@@ -65,25 +72,25 @@ function ImageForm({
   return (
     <Modal
       className="crew-modal"
-      onClose={() => setAbri(false)}
+      onClose={() => handleClose()}
       onOpen={() => setAbri(true)}
       open={abri}
     >
-      <Modal.Header>Add Your Images</Modal.Header>
+      <Modal.Header>Edit Description ?</Modal.Header>
       <Segment>
         <Form onSubmit={handleAdd}>
           <Form.Input hidden={editImage.id} type="file" multiple onChange={handleImage} />
-          <Item.Group className="job-form-image-item-div">
+          <Item.Group>
             {images?.map((i) => (
-              <Item key={i.image.lastMoidified} className="job-form-image-item">
-                <Image className="job-form-image" src={editImage.id ? i.image : URL.createObjectURL(i.image)} />
-                <Form.TextArea label="Add Description" value={editImage.id ? images[0].description : images[images.indexOf[i]]?.description} name={images.indexOf(i)} onChange={handleDescription} />
+              <Item key={i.image.lastMoidified} className="job-form-images">
+                <Image src={editImage.id ? i.image : URL.createObjectURL(i.image)} />
+                <Form.TextArea className="edit-image-description" label="Add Description" value={editImage.id ? images[0].description : images[images.indexOf[i]]?.description} name={images.indexOf(i)} onChange={handleDescription} />
               </Item>
             ))}
           </Item.Group>
           <Form.Group className="crew-modal-buttons" widths="equal">
             <Button type="submit" positive>
-              Add
+              Save
             </Button>
             <Button type="button" color="black" onClick={handleClose}>
               Done

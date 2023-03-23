@@ -8,6 +8,12 @@ const getUser = (id) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+const getAvailableUsers = (cid) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/users?cid=${cid}`)
+    .then((resp) => resolve(resp.json()))
+    .catch(reject);
+});
+
 const updateUserProfile = (obj) => new Promise((resolve, reject) => {
   fetch(`${dbUrl}/users/${obj.id}`, {
     method: 'PUT',
@@ -26,8 +32,8 @@ const deleteUser = (id) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const getCrewForJob = (id) => new Promise((resolve, reject) => {
-  fetch(`${dbUrl}/users?job=${id}`)
+const getCrewForJob = (id, cid) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/users?job=${id}&cid=${cid}`)
     .then((response) => resolve(response.json()))
     .catch(reject);
 });
@@ -65,5 +71,5 @@ const deleteCrew = (id) => new Promise((resolve, reject) => {
 });
 
 export {
-  getUser, getCrewForJob, createCrew, updateCrew, deleteCrew, deleteUser, updateUserProfile,
+  getUser, getCrewForJob, createCrew, updateCrew, deleteCrew, deleteUser, updateUserProfile, getAvailableUsers,
 };

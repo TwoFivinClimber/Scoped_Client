@@ -32,8 +32,8 @@ function Job() {
 
   return (
     <>
-      <JobDetail obj={job} onUpdate={getTheContent} />
-      <Gear authId={job.uid?.id} jobId={job.id} gearArr={job.gear} onUpdate={getTheContent} />
+      <JobDetail job={job} onUpdate={getTheContent} />
+      <Gear authId={job.uid?.id} jobId={job.id} gearArr={job.gear} cid={job.company?.id} onUpdate={getTheContent} />
       <Images authId={job.uid?.id} imageArr={job.images} jobId={job.id} onUpdate={getTheContent} />
       <Segment>
         <Header as="h3">Messages</Header>

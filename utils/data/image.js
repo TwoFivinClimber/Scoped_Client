@@ -30,4 +30,6 @@ const updateImage = (obj) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-export { createJobImages, deleteImage, updateImage };
+export {
+  createJobImages, deleteImage, updateImage,
+};

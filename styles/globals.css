@@ -23,6 +23,26 @@ body {
   background-color: #e5e5e5;
 }
 
+/* Sign In */
+
+.landing-container{
+  height: 100vh;
+  background-color: black;
+}
+
+.sign-in-button-div{
+  display: flex;
+  justify-content: center;
+}
+
+.sign-in-button{
+  width: 12rem;
+}
+
+.scoped-image{
+  padding-top: 5rem;
+}
+
 /* NAV */
 
 .scoped-nav{
@@ -38,6 +58,15 @@ body {
 .meta-fix{
   color: black!important;
 }
+
+.company-drop-items{
+  display: flex!important;
+}
+
+.company-drop-items .text {
+  font-weight: bold;
+}
+
 
 /* Job Detail */
 .job-crew-column{
@@ -69,12 +98,23 @@ body {
 .job-images-div{
   display: flex;
   flex-direction: wrap;
+  justify-content: space-evenly;
 }
 
 .job-image{
   height: 180px!important;
   width: 240px!important;
   object-fit: cover;
+}
+
+/*Job Detail Image Modal */
+.image-view-modal-description{
+  display:flex!important;
+  align-items: center;
+}
+.modal-images img{
+  border-radius: 5%;
+  max-height: 500px;
 }
 /*Modal Center */
 .dimmed.dimmable > .ui.animating.dimmer, .dimmed.dimmable > .ui.visible.dimmer, .ui.active.dimmer {
@@ -96,18 +136,14 @@ body {
 .job-form-buttons{
   justify-content: space-around;
 }
-.job-form-image{
-  height: 200px;
-  width: 200px;
-  object-fit: cover;
+.job-form-images{
+  align-items: center
 }
-.job-form-image-item{
-  width: 40%!important;
+.edit-image-description{
+  width: 100%;
 }
-.job-form-image-item-div{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+.job-form-company{
+  align-items: center;
 }
 
 /*Crew Modal*/
@@ -118,10 +154,30 @@ body {
   justify-content: space-around;
 }
 
-/* Index Page */
-
-.index-jobs-div{
+/* Blog */
+.blog-title-header{
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
+}
+.blog-user-tag{
+  display: flex;
+}
+
+/* Company Detail  */
+
+.altLogo{
+  display: block;
+  height: 20rem;
+  width: 20rem;
+  border-radius: 50%;
+  background-color: firebrick;
+  text-align: center;
+  font-size: 10rem;
+}
+
+/* logo modal */
+.logo-modal-image{
+  object-fit: cover;
+  height: 20rem!important;
+  width: 20rem!important;
 }

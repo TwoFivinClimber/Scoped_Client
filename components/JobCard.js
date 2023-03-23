@@ -5,12 +5,12 @@ import { useRouter } from 'next/router';
 
 function JobCard({ obj }) {
   const router = useRouter();
-  const date = obj.datetime?.split('T')[0];
-  const time = obj.datetime?.split('T')[1].split('Z')[0];
+  // const date = obj.datetime?.split('T')[0];
+  // const time = obj.datetime?.split('T')[1].split('Z')[0];
   return (
-    <Card as="button" onClick={() => router.push(`/job/${obj.id}`)}>
+    <Card fluid as="button" onClick={() => router.push(`/job/${obj.id}`)}>
       <Card.Content header={obj.title} />
-      <Card.Content>{date} {time}</Card.Content>
+      <Card.Content>{obj.datetime}</Card.Content>
       <Card.Content description={obj.description} />
       <Card.Content extra>
         <Card.Content content={obj.category.skill} />

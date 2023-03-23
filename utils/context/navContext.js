@@ -5,7 +5,7 @@ import {
   useState,
   useEffect,
 } from 'react';
-import { getInvitesByUser } from '../data/invites';
+import { getCmpInvitesByUser, getInvitesByUser } from '../data/invites';
 import { useAuth } from './authContext';
 
 const NavContext = createContext();
@@ -14,10 +14,14 @@ NavContext.displayName = 'NavContext';
 
 const InviteProvider = (props) => {
   const { user } = useAuth();
-  const [invites, setInvites] = useState(null);
+  const [invites, setInvites] = useState([]);
+  const [compInvites, setCompInvites] = useState([]);
 
   const updateInvites = useMemo(
     () => () => getInvitesByUser(user?.id).then((data) => {
+      getCmpInvitesByUser(user?.id).then((offers) => {
+        setCompInvites(offers);
+      });
       setInvites(data);
     }),
     [user?.id],
@@ -26,6 +30,9 @@ const InviteProvider = (props) => {
   useEffect(() => {
     if (user?.id) {
       getInvitesByUser(user?.id).then((data) => {
+        getCmpInvitesByUser(user?.id).then((offers) => {
+          setCompInvites(offers);
+        });
         setInvites(data);
       });
     } else {
@@ -36,9 +43,10 @@ const InviteProvider = (props) => {
   const value = useMemo(
     () => ({
       invites,
+      compInvites,
       updateInvites,
     }),
-    [invites, updateInvites],
+    [invites, updateInvites, compInvites],
   );
 
   return <NavContext.Provider value={value} {...props} />;

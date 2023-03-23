@@ -3,10 +3,8 @@ import { useEffect, useState } from 'react';
 import {
   Header, Image, Button, Checkbox, Form,
 } from 'semantic-ui-react';
-import AsyncSelect from 'react-select/async';
 import { useRouter } from 'next/router';
 import { registerUser } from '../utils/auth';
-import { getSkills } from '../utils/data/skills';
 import { useAuth } from '../utils/context/authContext';
 import { updateUserProfile } from '../utils/data/user';
 
@@ -14,9 +12,10 @@ function UserForm({ userObj }) {
   const initialState = {
     firebase: userObj.uid,
     name: userObj.fbUser.displayName,
+    phone: '',
+    email: userObj.fbUser.email,
     image: userObj.fbUser.photoURL,
     bio: '',
-    skills: [],
   };
   const [input, setInput] = useState(initialState);
   const [terms, setTerms] = useState(false);
@@ -30,24 +29,16 @@ function UserForm({ userObj }) {
       [name]: value,
     }));
   };
-  const handleSkills = (selected) => {
-    setInput((prevState) => ({
-      ...prevState,
-      skills: selected,
-    }));
-  };
 
-  // registerUser(input)
-  // updateUser(userObj.uid)
   const handleSubmit = (e) => {
     e.preventDefault();
     if ('valid' in userObj) {
-      input.skills = input.skills.map((s) => s.value);
-      registerUser(input).then(() => updateUser(userObj.uid));
+      registerUser(input).then(() => updateUser(userObj.uid).then(() => {
+        router.push('/profile');
+      }));
     } else {
-      input.skills = input.skills.map((s) => s.value);
       input.id = userObj.id;
-      updateUserProfile(input).then(() => updateUser(userObj.uid)).then(() => router.push(`/user/${userObj.id}`));
+      updateUserProfile(input).then(() => updateUser(userObj.firebase)).then(() => router.push('/profile'));
     }
   };
 
@@ -58,6 +49,8 @@ function UserForm({ userObj }) {
         firebase: userObj.uid,
         name: userObj.name,
         image: userObj.image,
+        phone: userObj.phone,
+        email: userObj.email,
         bio: userObj.bio,
         skills: fSkills,
       };
@@ -75,17 +68,15 @@ function UserForm({ userObj }) {
           <input name="bio" value={input.bio} onChange={handleChange} placeholder="Tell us about yourself" />
         </label>
       </Form.Field>
-      <Form.Field>
-        <label htmlFor="skillSelect">Skills</label>
-        <AsyncSelect
-          id="skillSelect"
-          isMulti
-          cacheOptions
-          defaultOptions
-          value={input.skills}
-          onChange={handleSkills}
-          loadOptions={getSkills}
-        />
+      <Form.Field type="tel">
+        <label>Phone Number
+          <input name="phone" value={input.phone} onChange={handleChange} placeholder="Enter Your Contact number" />
+        </label>
+      </Form.Field>
+      <Form.Field type="email">
+        <label>Email
+          <input name="email" value={input.email} onChange={handleChange} placeholder="Enter Your Contact number" />
+        </label>
       </Form.Field>
       <Form.Field>
         <Checkbox required value={terms} onClick={() => setTerms(!terms)} label="I agree to the Terms and Conditions" />
@@ -99,7 +90,10 @@ UserForm.propTypes = {
   userObj: PropTypes.shape({
     id: PropTypes.number,
     uid: PropTypes.string,
+    firebase: PropTypes.string,
     name: PropTypes.string,
+    phone: PropTypes.string,
+    email: PropTypes.string,
     bio: PropTypes.string,
     image: PropTypes.string,
     skills: PropTypes.arrayOf(
@@ -113,6 +107,7 @@ UserForm.propTypes = {
     fbUser: PropTypes.shape({
       displayName: PropTypes.string,
       photoURL: PropTypes.string,
+      email: PropTypes.string,
     }),
   }).isRequired,
 };

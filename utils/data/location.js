@@ -8,10 +8,16 @@ const findPlace = (input) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+const findCity = (input) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/city?input=${input}`)
+    .then((response) => resolve(response.json()))
+    .catch(reject);
+});
+
 const getLocationDetails = (placeId) => new Promise((resolve, reject) => {
   fetch(`${dbUrl}/detail?placeId=${placeId}`)
     .then((response) => resolve(response.json()))
     .catch((response) => reject(response));
 });
 
-export { findPlace, getLocationDetails };
+export { findPlace, getLocationDetails, findCity };

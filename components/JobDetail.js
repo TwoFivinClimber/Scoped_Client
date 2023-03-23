@@ -1,6 +1,7 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState } from 'react';
 import {
-  Header, Grid, Image, Divider, Segment, List, Button, Dropdown,
+  Header, Grid, Image, Divider, Segment, List, Button, Dropdown, Confirm,
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
@@ -8,18 +9,22 @@ import { useRouter } from 'next/router';
 import CrewModal from './CrewModal';
 import { useAuth } from '../utils/context/authContext';
 import { deleteJob } from '../utils/data/job';
+import { useInvite } from '../utils/context/navContext';
 
-function JobDetail({ obj, onUpdate }) {
-  const date = obj.datetime?.split('T')[0];
-  const time = obj.datetime?.split('T')[1].split('Z')[0];
+function JobDetail({ job, onUpdate }) {
   const [open, setOpen] = useState(false);
-  const { user } = useAuth();
+  const [confirm, setConfirm] = useState(false);
+  const { user, updateUser } = useAuth();
+  const { updateInvites } = useInvite();
   const router = useRouter();
 
   const deleteThisJob = () => {
-    if (window.confirm('Are you sure you want to delete this job?')) {
-      deleteJob(obj.id).then(() => router.push('/'));
-    }
+    deleteJob(job.id).then(() => {
+      updateInvites().then(() => {
+        updateUser(user.firebase);
+        router.push('/');
+      });
+    });
   };
 
   return (
@@ -27,42 +32,43 @@ function JobDetail({ obj, onUpdate }) {
       <Segment>
         <Grid columns={2}>
           <Grid.Column>
-            <Header as="h1">{obj?.title}</Header>
+            <Header as="h1">{job?.title}</Header>
+            <Header>{job.company?.name}</Header>
           </Grid.Column>
           <Grid.Column textAlign="right">
             <Dropdown
               className="link item"
               icon="ellipsis horizontal"
-              hidden={obj.uid?.id !== user.id}
+              hidden={job.uid?.id !== user.id}
             >
               <Dropdown.Menu>
-                <Link passHref href={`/job/edit/${obj.id}`}>
+                <Link passHref href={`/job/edit/${job.id}`}>
                   <Dropdown.Item>Edit</Dropdown.Item>
                 </Link>
-                <Dropdown.Item onClick={deleteThisJob}>Delete</Dropdown.Item>
+                <Dropdown.Item onClick={() => setConfirm(!confirm)}>Delete</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </Grid.Column>
         </Grid>
         <Grid columns={2} divided>
           <Grid.Column as="h5">
-            <li>{obj.location}</li>
+            <li>{job.location}</li>
             <Divider />
-            <li>{date}</li>
+            <li>{job.address}</li>
             <Divider />
-            <li>{time}</li>
+            <li>{job.datetime}</li>
           </Grid.Column>
           <Grid.Column className="job-crew-column">
             <Header as="h4">Crew
-              <Button hidden={obj.uid?.id !== user.id} onClick={() => setOpen(!open)} size="small">Add Crew</Button>
+              <Button hidden={job.uid?.id !== user.id} onClick={() => setOpen(!open)} size="small">Add Crew</Button>
             </Header>
             <List horizontal relaxed>
-              {obj.crew?.map((i) => (
+              {job.crew?.map((i) => (
                 <List.Item key={i.id}>
                   <Image avatar src={i.uid.image} />
                   <List.Content>
                     <List.Header>{i.uid.name}</List.Header>
-                    {i.skill.skill}{`-${i.accepted}`}
+                    {i.skill.skill}{`-${i.accepted ? 'Accepted' : i.accepted === false ? 'Declined' : 'Pending'}`}
                   </List.Content>
                 </List.Item>
               ))}
@@ -70,16 +76,23 @@ function JobDetail({ obj, onUpdate }) {
           </Grid.Column>
         </Grid>
         <Header as="h3">Job Details</Header>
-        <p>{obj.description}</p>
+        <p>{job.description}</p>
       </Segment>
-      <CrewModal jobId={obj.id} crew={obj.crew} open={open} setOpen={setOpen} onUpdate={onUpdate} />
+      <CrewModal jobId={job.id} cid={job.company?.id} crew={job.crew} open={open} setOpen={setOpen} onUpdate={onUpdate} />
+      <Confirm
+        className="crew-modal"
+        open={confirm}
+        content="Delete this job ?"
+        onCancel={() => setConfirm(!confirm)}
+        onConfirm={() => deleteThisJob()}
+      />
     </>
   );
 }
 
 JobDetail.propTypes = {
   onUpdate: PropTypes.func.isRequired,
-  obj: PropTypes.shape({
+  job: PropTypes.shape({
     id: PropTypes.number,
     title: PropTypes.string,
     description: PropTypes.string,
@@ -88,6 +101,10 @@ JobDetail.propTypes = {
     address: PropTypes.string,
     lat: PropTypes.number,
     long: PropTypes.number,
+    company: PropTypes.shape({
+      name: PropTypes.string,
+      id: PropTypes.number,
+    }),
     category: PropTypes.shape({
       id: PropTypes.number,
       skill: PropTypes.string,

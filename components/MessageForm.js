@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Form, Button, Header } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { useAuth } from '../utils/context/authContext';
@@ -33,14 +33,10 @@ function MessageForm({
     }
   };
 
-  useEffect(() => {
-    console.warn(crew);
-  }, [crew]);
-
   return (
-    <Form onSubmit={handleSubmit} reply>
+    <Form onSubmit={handleSubmit} hidden={!(jobInvite?.accepted || authId === user.id)}>
       <Header as="h6">Add a Message</Header>
-      <Form.TextArea hidden={!(jobInvite?.accepted || authId === user.id)} value={input} onChange={handleChange} onKeyDown={handleKeyDown} />
+      <Form.TextArea value={input} onChange={handleChange} onKeyDown={handleKeyDown} />
       <Button hidden={input === ''} type="submit" content="Add Reply" />
     </Form>
   );
