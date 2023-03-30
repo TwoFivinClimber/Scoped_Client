@@ -5,6 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import BlogModal from './BlogModal';
 import { deleteBlogPost } from '../utils/data/blog';
+import { useAuth } from '../utils/context/authContext';
 
 function Blog({
   blogs, cid, onUpdate, pending,
@@ -12,6 +13,7 @@ function Blog({
   const [open, setOpen] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const [edit, setEdit] = useState({});
+  const { user } = useAuth();
 
   const handleEdit = (post) => {
     setEdit(post);
@@ -41,6 +43,7 @@ function Blog({
                 <Dropdown
                   icon="ellipsis horizontal"
                   size="tiny"
+                  hidden={!(user.id === i.uid.id)}
                 >
                   <Dropdown.Menu>
                     <Dropdown.Item onClick={() => handleEdit(i)}>Edit</Dropdown.Item>

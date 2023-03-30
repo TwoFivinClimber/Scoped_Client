@@ -45,7 +45,7 @@ function JobDetail({ job, onUpdate }) {
                 <Link passHref href={`/job/edit/${job.id}`}>
                   <Dropdown.Item>Edit</Dropdown.Item>
                 </Link>
-                <Dropdown.Item onClick={() => setConfirm(!confirm)}>Delete</Dropdown.Item>
+                <Dropdown.Item style={{ color: 'red' }} onClick={() => setConfirm(!confirm)}>Delete</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </Grid.Column>

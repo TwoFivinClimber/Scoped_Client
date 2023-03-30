@@ -99,7 +99,7 @@ export default function NavBar() {
             </Link>
             <Link passHref href="/company/new">
               <Dropdown.Item
-                content="Creare Company"
+                content="Create Company"
                 icon="bullhorn"
               />
             </Link>

@@ -43,6 +43,12 @@ body {
   padding-top: 5rem;
 }
 
+/* Profile */
+
+/* .profile-image{
+  object-fit: fill!important;
+} */
+
 /* NAV */
 
 .scoped-nav{

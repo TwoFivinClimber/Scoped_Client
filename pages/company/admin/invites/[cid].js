@@ -30,7 +30,7 @@ function Invites() {
         <Grid columns={3}>
           {company.invites?.map((i) => (
             <Grid.Column>
-              <UserInviteCard user={i.uid} />
+              <UserInviteCard user={i.uid} inviteId={i.id} onUpdate={getTheContent} />
             </Grid.Column>
           ))}
         </Grid>

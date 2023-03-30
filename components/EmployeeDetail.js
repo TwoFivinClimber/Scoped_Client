@@ -83,8 +83,8 @@ function EmployeeDetail({
         <Item.Extra>Since: {employee.creation}</Item.Extra>
       </Item.Content>
       <Item.Group hidden={edit}>
-        <Button positive onClick={() => setEdit(!edit)}>Edit</Button>
-        <Button negative onClick={() => setConfirm(!confirm)}>Delete</Button>
+        <Button positive onClick={() => setEdit(!edit)}>Edit Skills</Button>
+        <Button negative onClick={() => setConfirm(!confirm)}>Let Go</Button>
       </Item.Group>
       <Confirm
         className="crew-modal"

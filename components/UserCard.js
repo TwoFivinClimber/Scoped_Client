@@ -27,7 +27,7 @@ function UserCard({ obj }) {
     <Grid celled>
       <Grid.Row>
         <Grid.Column width={4}>
-          <Image src={obj.image} />
+          <Image className="profile-image" fluid rounded src={obj.image} />
         </Grid.Column>
         <Grid.Column textAlign="center" width={11}>
           <div>
