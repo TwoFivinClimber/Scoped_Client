@@ -33,7 +33,8 @@ function JobDetail({ job, onUpdate }) {
         <Grid columns={2}>
           <Grid.Column>
             <Header as="h1">{job?.title}</Header>
-            <Header>{job.company?.name}</Header>
+            <Header as="block" content={job.company?.name} />
+            <Image size="mini" verticalAlign="center" spaced="left" as="block" src={job.company?.logo} />
           </Grid.Column>
           <Grid.Column textAlign="right">
             <Dropdown
@@ -60,7 +61,7 @@ function JobDetail({ job, onUpdate }) {
           </Grid.Column>
           <Grid.Column className="job-crew-column">
             <Header as="h4">Crew
-              <Button hidden={job.uid?.id !== user.id} onClick={() => setOpen(!open)} size="small">Add Crew</Button>
+              <Button hidden={job.uid?.id !== user.id} onClick={() => setOpen(!open)} floated="right" size="small">Add Crew</Button>
             </Header>
             <List horizontal relaxed>
               {job.crew?.map((i) => (
@@ -103,6 +104,7 @@ JobDetail.propTypes = {
     long: PropTypes.number,
     company: PropTypes.shape({
       name: PropTypes.string,
+      logo: PropTypes.string,
       id: PropTypes.number,
     }),
     category: PropTypes.shape({

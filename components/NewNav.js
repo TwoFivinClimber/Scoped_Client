@@ -60,6 +60,9 @@ export default function NavBar() {
           {user.companies?.map((cmp) => (
             <Link key={cmp.id} passHref href={`/company/${cmp.company.id}`}>
               <Dropdown.Item
+                id="companies"
+                onClick={handleClick}
+                active={active === 'companies'}
                 className="company-drop-items"
                 icon={{ as: 'img', avatar: true, src: cmp.company.logo }}
                 content={cmp.company.name}

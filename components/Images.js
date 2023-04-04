@@ -38,10 +38,10 @@ function Images({
             <Item key={i.id}>
               <Image onClick={() => setOpen(!open)} key={i.id} size="small" bordered centered rounded className="job-image" src={i.image} />
               <Item.Extra>
-                <Button.Group size="mini" compact>
-                  <Button size="mini" inverted color="green" content="Edit" hidden={authId !== user.id} onClick={() => handleEdit(imageArr.indexOf(i))} />
+                <Button.Group size="mini" compact hidden={authId !== user.id}>
+                  <Button size="mini" inverted color="green" content="Edit" onClick={() => handleEdit(imageArr.indexOf(i))} />
                   <Button.Or text="or" />
-                  <Button size="mini" inverted color="red" content="Delete" hidden={authId !== user.id} onClick={() => deleteThisImage(i.id)} />
+                  <Button size="mini" inverted color="red" content="Delete" onClick={() => deleteThisImage(i.id)} />
                 </Button.Group>
               </Item.Extra>
             </Item>

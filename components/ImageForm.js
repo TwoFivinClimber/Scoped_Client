@@ -76,11 +76,11 @@ function ImageForm({
       onOpen={() => setAbri(true)}
       open={abri}
     >
-      <Modal.Header>Edit Description ?</Modal.Header>
+      <Modal.Header>{editImage.id ? 'Edit Description' : 'Add Description'}</Modal.Header>
       <Segment>
         <Form onSubmit={handleAdd}>
           <Form.Input hidden={editImage.id} type="file" multiple onChange={handleImage} />
-          <Item.Group>
+          <Item.Group divided>
             {images?.map((i) => (
               <Item key={i.image.lastMoidified} className="job-form-images">
                 <Image src={editImage.id ? i.image : URL.createObjectURL(i.image)} />
