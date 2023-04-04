@@ -6,11 +6,13 @@ import {
 import PropTypes from 'prop-types';
 import { createCompanyImage } from '../utils/data/utils';
 import { updateCompanyLogo } from '../utils/data/company';
+import { useAuth } from '../utils/context/authContext';
 
 function LogoModal({
   open, setOpen, logo, cid, onUpdate,
 }) {
   const [image, setImage] = useState();
+  const { user, updateUser } = useAuth();
   const isObject = typeof image === 'object';
 
   const closeFunction = () => {
@@ -31,6 +33,7 @@ function LogoModal({
       };
       updateCompanyLogo(logoObj).then(() => {
         onUpdate();
+        updateUser(user.firebase);
         closeFunction();
       });
     });
@@ -54,7 +57,7 @@ function LogoModal({
           <Image className="logo-modal-image" centered circular size="medium" src={isObject ? URL.createObjectURL(image) : image} />
           <Form.Input type="file" onChange={handleChange} label="Upload Your NewLogo" />
           <Form.Group className="crew-modal-buttons" widths="equal">
-            <Button onClick={() => closeFunction()} type="button" positive>
+            <Button type="submit" positive>
               Save
             </Button>
             <Button type="button" color="black" onClick={() => closeFunction()}>

@@ -9,19 +9,23 @@ import { deleteCompany } from '../utils/data/company';
 import LogoModal from './LogoModal';
 import EmployeeManager from './EmployeeManager';
 import { useInvite } from '../utils/context/navContext';
+import { useAuth } from '../utils/context/authContext';
 
 function CompanyDetail({ company, employees, onUpdate }) {
   const [confirm, setConfirm] = useState(false);
   const router = useRouter();
+  const { user, updateUser } = useAuth();
   const [open, setOpen] = useState(false);
   const [abri, setAbri] = useState(false);
   const admin = (router.pathname.split('/')[2] === 'admin');
   const { updateInvites } = useInvite();
 
   const handleDelete = () => {
-    deleteCompany(company.id);
-    updateInvites();
-    router.push('/');
+    deleteCompany(company.id).then(() => {
+      updateInvites();
+      updateUser(user.firebase);
+      router.push('/');
+    });
   };
 
   return (
@@ -45,9 +49,9 @@ function CompanyDetail({ company, employees, onUpdate }) {
                   <Dropdown.Item hidden={!admin}>Edit Info</Dropdown.Item>
                 </Link>
                 <Link passHref href={`/company/admin/invites/${company.id}`}>
-                  <Dropdown.Item hidden={!admin}>Invites</Dropdown.Item>
+                  <Dropdown.Item hidden={!admin}>Invite Employees</Dropdown.Item>
                 </Link>
-                {admin ? (<Dropdown.Item onClick={() => setConfirm(!confirm)} hidden={!company.isowner}>Delete Company</Dropdown.Item>) : (' ') }
+                {admin ? (<Dropdown.Item style={{ color: 'red' }} onClick={() => setConfirm(!confirm)} hidden={!company.isowner}>Delete Company</Dropdown.Item>) : (' ') }
               </Dropdown.Menu>
             </Dropdown>
             <Confirm

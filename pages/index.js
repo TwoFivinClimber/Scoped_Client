@@ -21,6 +21,7 @@ function Home() {
 
   return (
     <>
+      <Header hidden={(userCreatedJobs || jobs.length)} as="h2" content="No Jobs Yet" />
       <Segment hidden={!userCreatedJobs.length}>
         <Header as="h3">My Jobs</Header>
         {userCreatedJobs?.map((job) => (

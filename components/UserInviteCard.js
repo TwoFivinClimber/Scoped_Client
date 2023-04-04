@@ -1,8 +1,16 @@
 import React from 'react';
 import { Card, Image, Button } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import { deleteInvite } from '../utils/data/invites';
 
-function UserInviteCard({ user, setSelected }) {
+function UserInviteCard({
+  user, inviteId, setSelected, onUpdate,
+}) {
+  const handleCancel = () => {
+    deleteInvite(inviteId).then(() => {
+      onUpdate();
+    });
+  };
   return (
     <Card>
       <Card.Content>
@@ -29,7 +37,10 @@ function UserInviteCard({ user, setSelected }) {
             </Button>
           </div>
         ) : (
-          <h1>Pending</h1>
+          <>
+            <h1 style={{ display: 'inline-block' }}>Pending</h1>
+            <Button floated="right" color="red" inverted onClick={() => handleCancel()}>Undo</Button>
+          </>
         )}
       </Card.Content>
     </Card>
@@ -37,6 +48,8 @@ function UserInviteCard({ user, setSelected }) {
 }
 
 UserInviteCard.propTypes = {
+  onUpdate: PropTypes.func,
+  inviteId: PropTypes.number,
   setSelected: PropTypes.func.isRequired,
   user: PropTypes.shape({
     value: PropTypes.number,
@@ -48,6 +61,11 @@ UserInviteCard.propTypes = {
     image: PropTypes.string,
     creation: PropTypes.string,
   }).isRequired,
+};
+
+UserInviteCard.defaultProps = {
+  inviteId: null,
+  onUpdate: null,
 };
 
 export default UserInviteCard;

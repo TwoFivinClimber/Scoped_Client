@@ -45,7 +45,7 @@ function SkillManager({ companySkills, cid, onUpdate }) {
             <Form onSubmit={handleSubmit} className="admin-gear-form">
               <Form.Field>
                 <Form.Input label="Add Skills" value={input} onChange={handleChange} placeholder="Enter Item Name" />
-                <Button type="submit">Submit</Button>
+                <Button type="submit">Add</Button>
               </Form.Field>
             </Form>
           </Container>
