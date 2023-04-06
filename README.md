@@ -12,30 +12,26 @@ Scoped is a Scope of Work application that aims to provide transparency and clea
 
 ## Features
 
-- Users can create a company
+- **Users can create a company**
 
-<img 
-src="./styles/images/company.png" 
-style="displayl: block"
->
+<img src="./styles/images/company.png" style="displayl: block">
 
-- Users can be invited to join a company
+- **Users can be invited to join a company**
 
-<img
-src="./styles/images/invite.png"
-style="displayl: block"
->
-- Users can create a jobs and invite employees to accept the work
+<img src="./styles/images/invite.png" style="displayl: block">
+
+- **Users can create a jobs and invite employees to accept the work**
 
 <img src="./styles/images/job.png" style="displayl: block">
 
-- Employees can accept or decline the company and job invites
+- **Employees can accept or decline the company and job invites**
 
 <img src="./styles/images/jobInvite.png" style="displayl: block">
-- Images prvide detail to job descriptions
+
+- **Images prvide detail to job descriptions**
 
 <img src="./styles/images/imageDetail.png" style="displayl: block">
-- Comments on the jobs allow discussion to clear up questions
+- **Comments on the jobs allow discussion to clear up questions**
 
 <img src="./styles/images/messaging.png" style="display: block">
 
