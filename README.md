@@ -37,7 +37,7 @@ Scoped is a Scope of Work application that aims to provide transparency and clea
 <img src="./styles/images/messaging.png" style="display: block">
 
 ## Usage
-<h2>Runing the project locally</h2>
+<h3>Runing the project locally</h3>
 
 - Clone this repository to your machine
 - Create a [firebase](https://firebase.google.com/) project and setup authentication from the Build menu.
