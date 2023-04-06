@@ -21,30 +21,30 @@ style="display: inline-block; margin: 0 auto; width: 150px; height: 300px ">
 - Users can be invited to join a company
 <img
 src="./styles/images/invite.png"
-<!-- style="display: inline-block; margin: 0 auto; width: 150px; height: 300px "> -->
+style="display: inline-block; margin: 0 auto; width: 150px; height: 300px ">
 >
 - Users can create a jobs and invite employees to accept the work
 <img 
 src="./styles/images/job.png"
-<!-- style="display: inline-block; margin: 0 auto; width: 150px; height: 300px "> -->
+style="display: inline-block; margin: 0 auto; width: 150px; height: 300px ">
 >
 
 - Employees can accept or decline the company and job invites
 <img
 src="./styles/images/jobInvite.png"
-<!-- style="display: inline-block; margin: 0 auto; width: 150px; height: 300px "> -->
+style="display: inline-block; margin: 0 auto; width: 150px; height: 300px ">
 >
 
 - Images prvide detail to job descriptions
 <img
 src="./styles/images/imageDetail.png"
-<!-- style="display: inline-block; margin: 0 auto; width: 150px; height: 300px "> -->
+style="display: inline-block; margin: 0 auto; width: 150px; height: 300px ">
 >
 
 - Comments on the jobs allow discussion to clear up questions
 <img
 src="./styles/images/messaging.png"
-<!-- style="display: inline-block; margin: 0 auto; width: 150px; height: 300px "> -->
+style="display: inline-block; margin: 0 auto; width: 150px; height: 300px ">
 >
 
 ## Usage
