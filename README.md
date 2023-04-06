@@ -51,5 +51,6 @@ NEXT_PUBLIC_DATABASE_URL=http://localhost:8000
 - From the command in the root directory run `npm install` to install project dependencies
 - Next run `npm run prepare` to setup husky
 - Run `npm run dev` to start the front-end portion of the application
+- Open [http://localhost:3000](http://localhost:3000) with your browser.
 
 **This repository is dependent on the [Back-End](https://github.com/TwoFivinClimber/Scoped-Server) running as well.  Directions are listed in scoped [Scoped-Server](https://github.com/TwoFivinClimber/Scoped-Server) Readme.
