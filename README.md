@@ -53,4 +53,4 @@ NEXT_PUBLIC_DATABASE_URL=http://localhost:8000
 - Run `npm run dev` to start the front-end portion of the application
 - Open [http://localhost:3000](http://localhost:3000) with your browser.
 
-**This repository is dependent on the [Back-End](https://github.com/TwoFivinClimber/Scoped-Server) running as well.  Directions are listed in scoped [Scoped-Server](https://github.com/TwoFivinClimber/Scoped-Server) Readme.
+**This repository is dependent on the [Back-End](https://github.com/TwoFivinClimber/Scoped-Server) running as well.  Directions are listed in [Scoped-Server](https://github.com/TwoFivinClimber/Scoped-Server) Readme.
