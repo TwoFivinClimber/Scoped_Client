@@ -1,4 +1,4 @@
-# Welcome to Scoped
+# Welcome to Scoped-Client
 
 Scoped is a Scope of Work application that aims to provide transparency and clear communication from client to skilled laborer.  Inspiration was brought on by past experiences where missing details led to waste of time and money.
 
